@@ -70,7 +70,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()   //Not neccessary
         logInfo()
-        print("\(editButton.frame)")
     }
     
     override func  viewWillDisappear(_ animated: Bool) {
@@ -122,6 +121,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     //MARK: - Choose Photo Func
+    
     func openGallary() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             picker!.allowsEditing = false
@@ -145,6 +145,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     //MARK: - imagePickerController
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
