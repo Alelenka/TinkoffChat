@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, UINavigationControllerDelegate {
 
     //MARK: - Outlets
     
@@ -17,6 +17,9 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var chooseIconButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
+    
+    //MARK: -
+    var picker:UIImagePickerController?=UIImagePickerController()
     
     //MARK: - Lifecicle
     
@@ -36,6 +39,7 @@ class ProfileViewController: UIViewController {
         logInfo()
         print("\(editButton.frame)")
     
+        picker?.delegate = self
         
         chooseIconButton.layer.cornerRadius = chooseIconButton.frame.height/2.0
         iconImgView.layer.cornerRadius = chooseIconButton.layer.cornerRadius
@@ -93,10 +97,64 @@ class ProfileViewController: UIViewController {
     
     @IBAction func chooseIconAction(_ sender: UIButton) {
         print("Выбери изображение профиля»")
+        
+        let alertController = UIAlertController(title: nil, message: "Откуда выбрать изображение?", preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel) { action in
+        }
+        alertController.addAction(cancelAction)
+        
+        let galleryAction = UIAlertAction(title: "Установить из галлереи", style: .default) { action in
+            self.openGallary()
+        }
+        alertController.addAction(galleryAction)
+        
+        let photoAction = UIAlertAction(title: "Сделать фото", style: .default) { action in
+            self.openCamera()
+        }
+        alertController.addAction(photoAction)
+        
+        self.present(alertController, animated: true) {
+        }
     }
     
     @IBAction func editAction(_ sender: Any) {
-        
     }
+    
+    //MARK: - Choose Photo Func
+    func openGallary() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            picker!.allowsEditing = false
+            picker!.sourceType = .photoLibrary
+            present(picker!, animated: true, completion: nil)
+        }
+    }
+    
+    func openCamera() {
+        if(UIImagePickerController .isSourceTypeAvailable(.camera)){
+            picker!.allowsEditing = false
+            picker!.sourceType = .camera
+            picker!.cameraCaptureMode = .photo
+            present(picker!, animated: true, completion: nil)
+        }else{
+            let alert = UIAlertController(title: "Внимание", message: "На данном девайсе нет камеры", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style:.default, handler: nil)
+            alert.addAction(ok)
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    //MARK: - imagePickerController
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let choosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        iconImgView.contentMode = .scaleAspectFit
+        iconImgView.image = choosenImage
+        dismiss(animated: true, completion: nil)
+    }
+
 }
 
