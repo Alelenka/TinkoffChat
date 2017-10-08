@@ -120,6 +120,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBAction func editAction(_ sender: Any) {
     }
     
+    @IBAction func backButtonAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil);
+    }
+    
     //MARK: - Choose Photo Func
     
     func openGallary() {
