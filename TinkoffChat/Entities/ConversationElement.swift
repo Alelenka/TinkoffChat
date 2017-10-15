@@ -8,15 +8,7 @@
 
 import Foundation
 
-//class Message : MessageCellConfiguration {
-//    var text: String?
-//
-//    init(text: String){
-//        self.text = text
-//    }
-//}
-
-class ConversationElement : ConversationsCellConfiguration {
+class ConversationElement  {
     var name : String?
     var message : String?
     var date: Date?

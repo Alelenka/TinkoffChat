@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5716A94F1F935E0F00DCFC8E /* GCDDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716A94E1F935E0F00DCFC8E /* GCDDataManager.swift */; };
+		5716A9511F935E1D00DCFC8E /* OperationDataManager..swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716A9501F935E1D00DCFC8E /* OperationDataManager..swift */; };
+		5716A9531F93688600DCFC8E /* ProfileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716A9521F93688600DCFC8E /* ProfileData.swift */; };
+		5716A9571F936A7E00DCFC8E /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716A9561F936A7E00DCFC8E /* URLExtension.swift */; };
+		5716A9591F93750900DCFC8E /* SaveInfoProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716A9581F93750900DCFC8E /* SaveInfoProtocol.swift */; };
+		5716A95D1F937A4C00DCFC8E /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716A95C1F937A4C00DCFC8E /* ViewControllerExtension.swift */; };
 		572563391F8A250300767457 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572563381F8A250300767457 /* ConversationViewController.swift */; };
 		5725633B1F8A2B9C00767457 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5725633A1F8A2B9C00767457 /* MessageCell.swift */; };
 		573100211F8A6CA900A0094C /* tChat.json in Resources */ = {isa = PBXBuildFile; fileRef = 573100201F8A6CA900A0094C /* tChat.json */; };
@@ -23,6 +29,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5716A94E1F935E0F00DCFC8E /* GCDDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GCDDataManager.swift; path = Models/GCDDataManager.swift; sourceTree = "<group>"; };
+		5716A9501F935E1D00DCFC8E /* OperationDataManager..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperationDataManager..swift; path = Models/OperationDataManager..swift; sourceTree = "<group>"; };
+		5716A9521F93688600DCFC8E /* ProfileData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileData.swift; path = Entities/ProfileData.swift; sourceTree = "<group>"; };
+		5716A9561F936A7E00DCFC8E /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLExtension.swift; path = Extension/URLExtension.swift; sourceTree = "<group>"; };
+		5716A9581F93750900DCFC8E /* SaveInfoProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveInfoProtocol.swift; sourceTree = "<group>"; };
+		5716A95C1F937A4C00DCFC8E /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewControllerExtension.swift; path = Extension/ViewControllerExtension.swift; sourceTree = "<group>"; };
 		572563381F8A250300767457 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationViewController.swift; path = Controllers/ConversationViewController.swift; sourceTree = "<group>"; };
 		5725633A1F8A2B9C00767457 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Views/MessageCell.swift; sourceTree = "<group>"; };
 		573100201F8A6CA900A0094C /* tChat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = tChat.json; path = Files/tChat.json; sourceTree = "<group>"; };
@@ -51,6 +63,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5716A94D1F935DDB00DCFC8E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5716A94E1F935E0F00DCFC8E /* GCDDataManager.swift */,
+				5716A9501F935E1D00DCFC8E /* OperationDataManager..swift */,
+				5716A9581F93750900DCFC8E /* SaveInfoProtocol.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		57A10C7D1F72C9C4005516C4 = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				57A10C891F72C9C4005516C4 /* AppDelegate.swift */,
+				5716A94D1F935DDB00DCFC8E /* Models */,
 				57D625561F87B28E004A5602 /* Entities */,
 				57D625511F87B16E004A5602 /* Views */,
 				57A63A931F87AACD001A944E /* Controllers */,
@@ -107,6 +130,8 @@
 			isa = PBXGroup;
 			children = (
 				57B5D88E1F8A1D6200E23CAC /* DateExtension.swift */,
+				5716A9561F936A7E00DCFC8E /* URLExtension.swift */,
+				5716A95C1F937A4C00DCFC8E /* ViewControllerExtension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -124,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				57CF4D521F8A5B0C005C187B /* ConversationElement.swift */,
+				5716A9521F93688600DCFC8E /* ProfileData.swift */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -205,10 +231,16 @@
 			files = (
 				572563391F8A250300767457 /* ConversationViewController.swift in Sources */,
 				5725633B1F8A2B9C00767457 /* MessageCell.swift in Sources */,
+				5716A95D1F937A4C00DCFC8E /* ViewControllerExtension.swift in Sources */,
 				57D6254E1F87B0FB004A5602 /* ProfileViewController.swift in Sources */,
+				5716A9531F93688600DCFC8E /* ProfileData.swift in Sources */,
 				57CF4D531F8A5B0C005C187B /* ConversationElement.swift in Sources */,
+				5716A9571F936A7E00DCFC8E /* URLExtension.swift in Sources */,
+				5716A9511F935E1D00DCFC8E /* OperationDataManager..swift in Sources */,
 				57B5D88F1F8A1D6200E23CAC /* DateExtension.swift in Sources */,
+				5716A9591F93750900DCFC8E /* SaveInfoProtocol.swift in Sources */,
 				57B5D88C1F8A15BE00E23CAC /* ConversationsCell.swift in Sources */,
+				5716A94F1F935E0F00DCFC8E /* GCDDataManager.swift in Sources */,
 				57A10C8A1F72C9C4005516C4 /* AppDelegate.swift in Sources */,
 				57D6254D1F87B0FB004A5602 /* ConversationsListViewController.swift in Sources */,
 			);

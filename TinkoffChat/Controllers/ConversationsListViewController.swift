@@ -23,7 +23,7 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
         tableView.estimatedRowHeight = 50.0;
         
         self.readJson()
-        
+    
     }
 
     override func didReceiveMemoryWarning() {
@@ -87,7 +87,11 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
             element =  arrayOffline[indexPath.row]
         }
         
-        cell.configureCell(info: element)
+        cell.name = element.name
+        cell.message = element.message
+        cell.date = element.date
+        cell.online = element.online
+        cell.hasUnreadMessages = element.hasUnreadMessages
         
         return cell
     }

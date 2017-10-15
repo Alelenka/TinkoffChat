@@ -45,8 +45,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
-//        cell.configureCell(info:)        
-        cell.mess = demoContent[indexPath.row]
+        cell.message = demoContent[indexPath.row]
         return cell
     }
     

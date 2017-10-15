@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MessageCellConfiguration : class {
-    var mess: String? {get set}
+    var message: String? {get set}
     //    var text: String? // Cannot override with a stored deprecated property 'text'
 }
 
@@ -17,9 +17,9 @@ class MessageCell: UITableViewCell , MessageCellConfiguration {
 
     @IBOutlet weak var messageTextLabel: UILabel!
     
-    var mess: String? {
+    var message: String? {
         get {
-            return self.mess
+            return self.message
         }
         
         set (newValue) {
@@ -34,10 +34,6 @@ class MessageCell: UITableViewCell , MessageCellConfiguration {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-    }
-    
-    func configureCell<T: MessageCellConfiguration>(info: T) {
-        messageTextLabel?.text = info.mess
     }
 
 }
