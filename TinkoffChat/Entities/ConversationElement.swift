@@ -9,29 +9,30 @@
 import Foundation
 
 class ConversationElement  {
-    var name : String?
-    var message : String?
-    var date: Date?
-    var online : Bool = false
+    var name : String = ""
+    var userId: String = ""
+    var lastMessageDate: Date?
+    var online : Bool = true
     var hasUnreadMessages : Bool = false
     
-    init?(json: [String: Any]) {
-        guard let name = json["name"] as? String,
-            let message = json["message"] as? String,
-            let date = json["date"] as? String,
-            let online = json["online"] as? Bool,
-            let hasUnreadMessages = json["hasUnreadMessages"] as? Bool else {
-                return nil
+    var messages: [Message] = []
+    
+    init?(withUser userId: String, userName: String?){
+        self.userId = userId
+        if let name = userName {
+            self.name = name
+        }
+    }
+    
+    func addMessage(message: Message){
+        if (message.incoming){
+            hasUnreadMessages = true
+            lastMessageDate = message.date
         }
         
-        self.name = name
-        self.message = message
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss dd.MM.yyyy"
-        self.date = dateFormatter.date(from:date)
-        self.online = online
-        self.hasUnreadMessages = hasUnreadMessages
-        
+        messages.append(message)
     }
+    
+    
 }
 

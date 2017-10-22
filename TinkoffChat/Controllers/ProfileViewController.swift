@@ -34,19 +34,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        //print("init \(editButton.frame)") //Ничего не выведется в консоль, так как метод не вызывается
-                                            //Так как ViewController создан в Storyboard
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        print("init \(editButton.frame)") //Crash так как пытаемся обратиться к несуществующему объекту
     }
     
     override func viewDidLoad() {
         super.viewDidLoad() // Always
         logInfo()
-//        print("\(editButton.frame)")
         
         nameTextField.delegate = self
         descriptionTextField.delegate = self
@@ -80,36 +76,34 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)  // Always
-        logInfo()
-//        print("\(editButton.frame)")  //Не отличается от значения во viewDidLoad, так как мы все еще не известны
-                                        //реальные размеры экрана и элементы не перестроились под него
+//        logInfo()
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)   // Always
-        logInfo()
+//        logInfo()
         
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()  //Not neccessary
-        logInfo()
+//        logInfo()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()   //Not neccessary
-        logInfo()
+//        logInfo()
     }
     
     override func  viewWillDisappear(_ animated: Bool) {
         super .viewWillDisappear(animated) // Always
-        logInfo()
+//        logInfo()
         NotificationCenter.default.removeObserver(self)
     }
     override func  viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated) // Always
-        logInfo()
+//        logInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -182,7 +176,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // MARK: - Save
     
-    func saveProfile<T: SaveInfoProtocol>(manager: T) {
+    func saveProfile(manager: SaveInfoProtocol) {//<T: SaveInfoProtocol>(manager: T) {
         activityIndicator.startAnimating()
         deactivateUI(true)
         
