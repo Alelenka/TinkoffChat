@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class GCDDataManader: SaveInfoProtocol {
+class GCDDataManader: SaveProfileProtocol {
     
     let fullPath: URL
     

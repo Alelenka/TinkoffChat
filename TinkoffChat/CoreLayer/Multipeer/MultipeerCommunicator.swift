@@ -9,24 +9,28 @@
 import Foundation
 import MultipeerConnectivity
 
-class MultipeerCommunicator:NSObject, Communicator {
+class MultipeerCommunicator: NSObject, ICommunicator {
     
     private var sessions = [ String : MCSession ]()
     
     private let peerID = MCPeerID(displayName: UUID().uuidString)
     private var browser: MCNearbyServiceBrowser!
     private var advertiser: MCNearbyServiceAdvertiser!
+    private var messageLoader: IMessageLoader!
     
     private let serviceType = "tinkoff-chat"
-    private let discoveryInfo = ["userName" : "a. belyaeva"]
+    private let discoveryInfo = ["userName" : "a$belyaeva"]
     private let messageEvent = "TextMessage"
     
-    //Communicator
-    weak var delegate: CommunicatorDelegate?
+    //ICommunicator
+    weak var delegate: ICommunicatorDelegate?
     var online: Bool = true
     
-    override init() {
+    init(withMessageLoader loader: MessageLoader) {
+        
         super.init()
+        
+        messageLoader = loader
         
         advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: discoveryInfo, serviceType: serviceType)
         advertiser.delegate = self
@@ -43,7 +47,9 @@ class MultipeerCommunicator:NSObject, Communicator {
         browser.stopBrowsingForPeers()
     }
     
-    func createSession(forUser userID: String) -> MCSession {
+    // MARK: - Session Create
+    
+    private func createSession(forUser userID: String) -> MCSession {
         if let session = sessions[userID] {
             return session
         } else {
@@ -56,14 +62,14 @@ class MultipeerCommunicator:NSObject, Communicator {
         }
     }
     
-    // MARK: communicator
+    // MARK: - Messages
     
     func sendMessage(string: String, to userID: String, completionHandler: ((Bool, Error?) -> ())?) {
         guard let session = sessions[userID] else {
             completionHandler?(false, CommunicatorError.internalCommunicatorError)
             return
         }
-        guard let message = createMessage(withText: string) else {
+        guard let message = messageLoader.maker.createMessage(text: string) else {
             completionHandler?(false, CommunicatorError.generateMessageCommunicatorError)
             return
         }
@@ -79,52 +85,15 @@ class MultipeerCommunicator:NSObject, Communicator {
             }
         }
     }
-    
-    func createMessage(withText text: String) -> Data? {
-        let messageId = generateMessageId()
-        let messageJson = [
-            "eventType" : messageEvent,
-            "messageId" : messageId,
-            "text"      : text
-        ]
-        
-        do {
-            let messageData = try JSONSerialization.data(withJSONObject: messageJson, options: [])
-            return messageData
-        } catch {
-            print("Error creating message json: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
-    // MARK: generate ID
-    
-    func generateMessageId() -> String {
-        let string = "\(arc4random_uniform(UINT32_MAX))+\(Date.timeIntervalSinceReferenceDate)+\(arc4random_uniform(UINT32_MAX))".data(using: .utf8)?.base64EncodedString()
-        return string!
-    }
 }
 
-    // MARK: Session delegate
+    // MARK: - MCSessionDelegate
 extension MultipeerCommunicator: MCSessionDelegate {
 
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         print("didReceiveData: \(data)")
-        do {
-            guard let messageJson = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [ String : String ] else {
-                print("Error parsing message json: eventType != \(messageEvent)")
-                return
-            }
-            guard messageJson["eventType"] == messageEvent else { return }
-            guard let messageText = messageJson["text"] else {
-                print("Error parsing message json: no text")
-                return
-            }
-            print("%@", messageJson)
-            delegate?.didReceiveMessage(text: messageText, fromUser: peerID.displayName, toUser: UUID().uuidString)
-        } catch {
-            print("Error parsing message json: \(error.localizedDescription)")
-        }
+        guard let messageText = messageLoader.parser.getMessage(fromData: data) else { return }
+        delegate?.didReceiveMessage(text: messageText, fromUser: peerID.displayName, toUser: UUID().uuidString)
     }
 
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
@@ -144,7 +113,7 @@ extension MultipeerCommunicator: MCSessionDelegate {
     }
 }
 
-    // MARK: MCNearbyServiceBrowserDelegate
+    // MARK: - MCNearbyServiceBrowserDelegate
 
 extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate  {
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -173,7 +142,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate  {
     }
 }
 
-    // MARK: MCNearbyServiceAdvertiserDelegate
+    // MARK: - MCNearbyServiceAdvertiserDelegate
 extension MultipeerCommunicator: MCNearbyServiceAdvertiserDelegate {
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {

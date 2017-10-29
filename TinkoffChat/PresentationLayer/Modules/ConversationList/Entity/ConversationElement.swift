@@ -14,6 +14,7 @@ class ConversationElement  {
     var lastMessageDate: Date?
     var online : Bool = true
     var hasUnreadMessages : Bool = false
+    var lastMessage: String?
     
     var messages: [Message] = []
     

@@ -27,7 +27,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     //MARK: -
     
-    var picker:UIImagePickerController?=UIImagePickerController()
+    var picker:UIImagePickerController = UIImagePickerController()
     var currentProfile: ProfileData = ProfileData.init()
     
     //MARK: - Lifecicle
@@ -48,7 +48,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         descriptionTextField.delegate = self
     
         iconImgView.image = nil
-        picker?.delegate = self
+        picker.delegate = self
         
         chooseIconButton.layer.cornerRadius = chooseIconButton.frame.height/2.0
         iconImgView.layer.cornerRadius = chooseIconButton.layer.cornerRadius
@@ -210,18 +210,18 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func openGallary() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            picker!.allowsEditing = false
-            picker!.sourceType = .photoLibrary
-            present(picker!, animated: true, completion: nil)
+            picker.allowsEditing = false
+            picker.sourceType = .photoLibrary
+            present(picker, animated: true, completion: nil)
         }
     }
     
     func openCamera() {
         if(UIImagePickerController .isSourceTypeAvailable(.camera)){
-            picker!.allowsEditing = false
-            picker!.sourceType = .camera
-            picker!.cameraCaptureMode = .photo
-            present(picker!, animated: true, completion: nil)
+            picker.allowsEditing = false
+            picker.sourceType = .camera
+            picker.cameraCaptureMode = .photo
+            present(picker, animated: true, completion: nil)
         }else{
             showOkAlert(with: "Вниание", message: "На данном девайсе нет камеры")
         }
@@ -269,17 +269,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @objc func keyboardNotification(notification: NSNotification) {
         if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
             let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
+            if endFrame.origin.y >= UIScreen.main.bounds.size.height {
                 self.contentTopConstraint?.constant = 0.0
             } else {
-                if let keyboardHeignt = endFrame?.size.height {
-                    self.contentTopConstraint?.constant = -keyboardHeignt/2.0
-                }
+                self.contentTopConstraint?.constant = -endFrame.size.height/2.0
             }
             UIView.animate(withDuration: duration,
                            delay: TimeInterval(0),

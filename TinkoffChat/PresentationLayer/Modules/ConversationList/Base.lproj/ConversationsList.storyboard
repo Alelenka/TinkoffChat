@@ -18,10 +18,10 @@
             </objects>
             <point key="canvasLocation" x="1570" y="-879"/>
         </scene>
-        <!--Conversation-->
+        <!--ConversationView-->
         <scene sceneID="bzk-Rq-zBb">
             <objects>
-                <viewControllerPlaceholder storyboardName="Conversation" id="zeB-cx-MtD" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="ConversationView" id="zeB-cx-MtD" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yNk-f9-9ju" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1578" y="-630"/>

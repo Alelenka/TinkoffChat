@@ -8,19 +8,21 @@
 
 import UIKit
 
-class ConversationsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ConversationsManagerDelegate {
+class ConversationsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, IConversationsListModelDelegate {
     
-    let showSegue = "ShowDialogSegue"
-    
-    let conversationManager = ConversationsManager.shared
+    private let showSegue = "ShowDialogSegue"
+    var model: IConversationsListModel?
+    private var dataSource = [ConversationElement]()
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight =  UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 50.0;
-        conversationManager.listDelegate = self
+        tableView.estimatedRowHeight = 50.0
+        tableView.delegate = self
+        tableView.dataSource = self
+//        conversationManager.listDelegate = self
 //        communicator.delegate = self
     }
     
@@ -28,30 +30,33 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
         tableView.reloadData()
     }
 
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    func setup(dataSource: [ConversationElement]) {
+        self.dataSource = dataSource
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
 
     // MARK: - TableViewDataSource
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversationManager.converationList.count
+        return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell") as! ConversationsCell
-        let conversation = conversationManager.converationList[indexPath.row]
+        let conversation = dataSource[indexPath.row]
         cell.name = conversation.name
         cell.date = conversation.lastMessageDate
         cell.online = true
         cell.hasUnreadMessages = conversation.hasUnreadMessages
 
-        if let message = conversation.messages.last {
-            cell.message = message.text
+        if let message = conversation.lastMessage {
+            cell.message = message
         } else {
             cell.message = ""
         }
@@ -71,9 +76,6 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        let conversation = conversationManager.converationList[indexPath.row]
-        conversation.hasUnreadMessages = false
-        
     }
     
     //MARK: - Navigation
@@ -81,23 +83,16 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == showSegue {
-            let destination = segue.destination
+            guard segue.destination is ConversationViewController else {
+                print("Storyboard error")
+                return
+            }
             if let index = tableView.indexPathForSelectedRow {
-                let conversation = conversationManager.converationList[index.row]
-                conversationManager.selectCurrentConversation(withId: conversation.userId)
-                destination.navigationItem.title = conversation.name
+//                let conversation = conversationManager.converationList[index.row]
+//                conversationManager.selectCurrentConversation(withId: conversation.userId)
+//                destination.navigationItem.title = conversation.name
             }
         }
-    }
-    
-    // MARK: ConversationDelegate
-    
-    func updateConversationsList() {
-        tableView.reloadData()
-    }
-    
-    func updateCurrentConversation() {
-        //do nothing
     }
     
 }

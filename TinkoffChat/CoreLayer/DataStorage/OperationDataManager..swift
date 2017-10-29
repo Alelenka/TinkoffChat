@@ -70,7 +70,7 @@ class LoadOperation: Operation {
     }
 }
 
-class OperationDataManager: SaveInfoProtocol {
+class OperationDataManager: SaveProfileProtocol {
     
     let fullPath: URL
     

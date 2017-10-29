@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, ConversationsManagerDelegate {
+class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
@@ -17,13 +17,11 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
-    let conversationManager = ConversationsManager.shared
-    var messages : [Message] = []
+//    var messages : [Message] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        conversationManager.conversationDelegate = self
         tableView.rowHeight =  UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 50.0
         
@@ -35,15 +33,15 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
-        if let conversation = conversationManager.currentConversation {
-            navigationItem.title = conversation.name
-            messages = conversation.messages
-        }
+//        if let conversation = conversationManager.currentConversation {
+//            navigationItem.title = conversation.name
+//            messages = conversation.messages
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
-        conversationManager.forgetCurrentConversation()
+//        conversationManager.forgetCurrentConversation()
     }
     
     override func didReceiveMemoryWarning() {
@@ -53,18 +51,18 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: - TableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        return 0;//messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = messages[indexPath.row]
-        
-        var identifier = "OutgoingMessage"
-        if message.incoming {
-            identifier = "IcomingMessage"
-        }
+//        let message = messages[indexPath.row]
+//        
+        let identifier = "OutgoingMessage"
+//        if message.incoming {
+//            identifier = "IcomingMessage"
+//        }
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
-        cell.message = message.text
+//        cell.message = message.text
         return cell
     }
     
@@ -73,10 +71,11 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         
         if let str = messageTextField.text {
             if str.count > 0 {
-                let message = Message.init(withText: messageTextField.text!, user: UUID().uuidString)
-                message?.incoming = false
-                conversationManager.send(message!)
-                messageTextField.text = ""
+                if let message = Message.init(withText: str, user: UUID().uuidString) {
+                    message.incoming = false
+//                    conversationManager.send(message)
+                    messageTextField.text = ""
+                }
             }
         }
     }
@@ -92,17 +91,16 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     
     @objc func keyboardNotification(notification: NSNotification) {
         if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            
             let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
+            if endFrame.origin.y >= UIScreen.main.bounds.size.height {
                 self.bottomConstraint?.constant = 0.0
             } else {
-                if let keyboardHeignt = endFrame?.size.height {
-                    self.bottomConstraint?.constant = keyboardHeignt
-                }
+                self.bottomConstraint?.constant = endFrame.size.height
             }
             UIView.animate(withDuration: duration,
                            delay: TimeInterval(0),
@@ -111,26 +109,13 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
                            completion: nil)
         }
     }
+
     
-    // MARK: ConversationDelegate
-    func updateConversationsList() {
-        checkUserOnline()
-    }
-    
-    func updateCurrentConversation() {
-        checkUserOnline()
-        if let conversation = conversationManager.currentConversation {
-            messages = conversation.messages
-        }
-        tableView.reloadData()
-        //reload
-    }
-    
-    func checkUserOnline() {
-        if (conversationManager.currentConversation == nil){
-            sendButton.isEnabled = false
-        } else {
-            sendButton.isEnabled = true
-        }
-    }
+//    func checkUserOnline() {
+//        if (conversationManager.currentConversation == nil){
+//            sendButton.isEnabled = false
+//        } else {
+//            sendButton.isEnabled = true
+//        }
+//    }
 }

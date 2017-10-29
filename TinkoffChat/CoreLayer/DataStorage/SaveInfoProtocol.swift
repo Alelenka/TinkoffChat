@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol SaveInfoProtocol {
+protocol SaveProfileProtocol {
     func save(profileData: Data, completion: @escaping (_ result: Bool) -> ())
 }

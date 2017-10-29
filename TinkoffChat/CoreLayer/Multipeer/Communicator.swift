@@ -14,13 +14,13 @@ enum CommunicatorError: Error {
     case sendCommunicatorError
 }
 
-protocol Communicator {
+protocol ICommunicator {
     func sendMessage(string: String, to userID: String, completionHandler: ((_ success: Bool, _ error: Error?) -> ())?)
-    weak var delegate: CommunicatorDelegate? {get set}
+    weak var delegate: ICommunicatorDelegate? {get set}
     var online: Bool {get set}
 }
 
-protocol CommunicatorDelegate: class {
+protocol ICommunicatorDelegate: class {
     //discovering
     func didFoundUser(userID: String, userName: String?)
     func didLostUser(userID: String)
