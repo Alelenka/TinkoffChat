@@ -1,5 +1,5 @@
 //
-//  ConvesationModel.swift
+//  ConversationModel.swift
 //  TinkoffChat
 //
 //  Created by Alyona Belyaeva on 29.10.17.
@@ -17,57 +17,59 @@ protocol IConversationModel: class {
     weak var delegate: IConversationModelDelegate? { get set }
     var userID: String { get set }
     var userName: String { get set }
-    func sendMessage(string text: String, completionHandler: (() -> ())?)
+    var messages: [MessageCellDisplayModel] { get set }
+    func sendMessage(string text: String)
     func markAsRead()
 }
 
 protocol IConversationModelDelegate: class {
     func userWentOffline()
-    func setup(dataSource: [Message])
+    func setup(dataSource: [MessageCellDisplayModel])
 }
 
-class ConversationModel { //:IConversationModel, ICommunicationServiceDelegate 
-    
+class ConversationModel: IConversationModel, ICommunicationServiceConversationDelegate, ConversationServiceDelegate {
+
     weak var delegate: IConversationModelDelegate?
     var communicationService: ICommunicationService
-    var messageSenderService: IConvesationService
+    var conversationService: IConversationService
     var userID: String
     var userName: String
+    var messages: [MessageCellDisplayModel] = []
     
-    init(communicationService: ICommunicationService, messageSenderService: IConvesationService, userID: String, userName: String) {
+    init(communicationService: ICommunicationService, conversationService: IConversationService, userID: String) {
         self.communicationService = communicationService
-        self.messageSenderService = messageSenderService
+        self.conversationService = conversationService
+        
         self.userID = userID
-        self.userName = userName
+        self.userName = self.conversationService.getUserName(withID: self.userID)
+        
+        for message in self.conversationService.getUserConversation(withID: self.userID) {
+            let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
+            self.messages.append(newMessage)
+        }
+        
     }
     
-    var messageHistory = [Message]() {
+    var messageHistory = [MessageCellDisplayModel]() {
         didSet {
             delegate?.setup(dataSource: messageHistory)
         }
     }
     
-    func sendMessage(string text: String, completionHandler: (() -> ())?) {
-        messageSenderService.sendMessage(string: text, to: userID) { (success: Bool, error: Error?) in
-            
+    func sendMessage(string text: String) {
+        conversationService.sendMessage(string: text, to: userID) { (success: Bool, error: Error?) in
             if let error = error {
                 print("Error sending message: \(error)")
             } else if success {
-                let newMessage = Message.init(withText: text, user: "")!
-                newMessage.incoming = false
-                self.messageHistory.append(newMessage)
+                print("send success")
             } else {
                 print("Error sending message: unknown error")
-            }
-            
-            DispatchQueue.main.async {
-                completionHandler?()
             }
         }
     }
     
     func markAsRead() {
-        communicationService.markConversationAsRead(withUserID: userID)
+        communicationService.markConversationAsRead(withuserID: userID)
     }
     
     // MARK: - CommunicationServiceDelegate
@@ -77,11 +79,13 @@ class ConversationModel { //:IConversationModel, ICommunicationServiceDelegate
         }
     }
     
-    func didReceiveMessage(text: String, fromUser userID: String) {
-        if userID == self.userID {
-            let newMessage = Message.init(withText: text, user: userID)!
-            newMessage.incoming = true
-            messageHistory.append(newMessage)
-        }
+    func didReceive(message: Message) {
+        let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
+        messageHistory.append(newMessage)
+    }
+    
+    func updateMessages(message: Message) {
+        let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
+        messageHistory.append(newMessage)
     }
 }

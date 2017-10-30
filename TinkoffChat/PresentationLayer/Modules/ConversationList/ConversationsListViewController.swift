@@ -83,15 +83,23 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == showSegue {
-            guard segue.destination is ConversationViewController else {
+            guard let conversationVC = segue.destination as? ConversationViewController else {
                 print("Storyboard error")
                 return
             }
-//            if let index = tableView.indexPathForSelectedRow {
-//                let conversation = conversationManager.converationList[index.row]
-//                conversationManager.selectCurrentConversation(withId: conversation.userId)
-//                destination.navigationItem.title = conversation.name
-//            }
+            
+            guard let communicationService = model?.communicationService else {
+                print("Error list model")
+                return
+            }
+            
+            if let index = tableView.indexPathForSelectedRow {
+                let conversation = dataSource[index.row]
+                let conversationAssembler = ConversationAssembly()
+                let userID = conversation.userID
+                
+                conversationAssembler.setup(inViewController: conversationVC, communicationService: communicationService, userID: userID)
+            }
         }
     }
     

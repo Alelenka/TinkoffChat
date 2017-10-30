@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
         
+        rootAssembly.conversationModel.dataStorage = rootAssembly.conversationStorage
+        
         return true
     }
 

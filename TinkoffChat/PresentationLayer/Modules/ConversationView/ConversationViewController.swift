@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, IConversationModelDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
@@ -17,7 +17,8 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
-//    var messages : [Message] = []
+    var model: IConversationModel?
+    private var dataSource = [MessageCellDisplayModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,21 +28,19 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         
         messageTextField.delegate = self
         navigationController?.navigationBar.tintColor = .black
-//        sendButton.isEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+            navigationItem.title = model?.userName
+        if let messages = model?.messages {
+            setup(dataSource: messages)
+        }
         
-//        if let conversation = conversationManager.currentConversation {
-//            navigationItem.title = conversation.name
-//            messages = conversation.messages
-//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
-//        conversationManager.forgetCurrentConversation()
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,18 +50,17 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: - TableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0;//messages.count
+        return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let message = messages[indexPath.row]
-//        
-        let identifier = "OutgoingMessage"
-//        if message.incoming {
-//            identifier = "IcomingMessage"
-//        }
+        let message = dataSource[indexPath.row]
+        var identifier = "OutgoingMessage"
+        if message.inbox {
+            identifier = "IcomingMessage"
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
-//        cell.message = message.text
+        cell.message = message.text
         return cell
     }
     
@@ -71,11 +69,10 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         
         if let str = messageTextField.text {
             if str.count > 0 {
-                if let message = Message.init(withText: str, user: UUID().uuidString) {
-                    message.incoming = false
-//                    conversationManager.send(message)
-                    messageTextField.text = ""
-                }
+                
+                model?.sendMessage(string: str)
+                
+                self.messageTextField.text = ""
             }
         }
     }
@@ -110,12 +107,15 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
 
+    // MARK: - ModelDelegate
+    func userWentOffline() {
+        sendButton.isEnabled = false
+    }
     
-//    func checkUserOnline() {
-//        if (conversationManager.currentConversation == nil){
-//            sendButton.isEnabled = false
-//        } else {
-//            sendButton.isEnabled = true
-//        }
-//    }
+    func setup(dataSource: [MessageCellDisplayModel]) {
+        self.dataSource = dataSource
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
 }

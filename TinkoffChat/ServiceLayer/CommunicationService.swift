@@ -10,21 +10,20 @@ import Foundation
 
 protocol ICommunicationService: class {
     weak var delegate: ICommunicationServiceDelegate? { get set }
-    weak var conversation: ICommunicationServiceConvesationDelegate? { get set }
+    weak var conversation: ICommunicationServiceConversationDelegate? { get set }
     var communicator: ICommunicator { get set }
-    func markConversationAsRead(withUserID userID: String)
+    func markConversationAsRead(withuserID userID: String)
 }
 
 protocol ICommunicationServiceDelegate: class {
-//    func userListChanged(list: [ConversationElement])
     func conversationCreated(conversation: ConversationElement)
     func conversationChanged(conversation: ConversationElement)
     func didLostUser(withID userID: String)
 }
 
-protocol ICommunicationServiceConvesationDelegate: class {
+protocol ICommunicationServiceConversationDelegate: class {
     func didLostUser(withID userID: String)
-    func didReceiveMessage(text: String, fromUser userID: String)
+    func didReceive(message: Message)
 }
 
 extension ICommunicationServiceDelegate {
@@ -35,9 +34,9 @@ extension ICommunicationServiceDelegate {
 class CommunicationService: ICommunicationService, ICommunicatorDelegate, ConversationStorageDelegate {
     
     weak var delegate: ICommunicationServiceDelegate?
-    weak var conversation: ICommunicationServiceConvesationDelegate?
+    weak var conversation: ICommunicationServiceConversationDelegate?
     var communicator: ICommunicator
-    let dataStorage: ConversationStorage // TO_DO
+    var dataStorage: ConversationStorage
     
     init(communicator: ICommunicator, conversationStorage: ConversationStorage) {
         self.communicator = communicator
@@ -45,8 +44,8 @@ class CommunicationService: ICommunicationService, ICommunicatorDelegate, Conver
         self.dataStorage.delegate = self
     }
     
-    func markConversationAsRead(withUserID userID: String) {
-        dataStorage.markMessageAsRead(withUserID: userID)
+    func markConversationAsRead(withuserID userID: String) {
+        dataStorage.markMessageAsRead(withuserID: userID)
     }
     
     // MARK: - ICommunicatorDelegate
@@ -62,8 +61,7 @@ class CommunicationService: ICommunicationService, ICommunicatorDelegate, Conver
     }
     
     func didReceiveMessage(text: String, fromUser sender: String, toUser: String) {
-        dataStorage.saveNewMessage(messageText: text, userId: sender)
-//        conversation?.didReceiveMessage(text: text, fromUser: sender) // TO_DO
+        dataStorage.saveNewMessage(messageText: text, userID: sender)
     }
     
     // MARK: - StorageDelegate

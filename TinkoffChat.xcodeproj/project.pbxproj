@@ -20,7 +20,6 @@
 		578D68291FA60AFC0055C6BB /* SaveProfileProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578D68251FA60AFC0055C6BB /* SaveProfileProtocol.swift */; };
 		578D68311FA60B030055C6BB /* Communicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578D682B1FA60B030055C6BB /* Communicator.swift */; };
 		578D68321FA60B030055C6BB /* ConversationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578D682C1FA60B030055C6BB /* ConversationElement.swift */; };
-		578D68331FA60B030055C6BB /* ConversationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578D682D1FA60B030055C6BB /* ConversationsManager.swift */; };
 		578D68351FA60B030055C6BB /* MessageElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578D682F1FA60B030055C6BB /* MessageElement.swift */; };
 		578D68361FA60B030055C6BB /* MultipeerCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578D68301FA60B030055C6BB /* MultipeerCommunicator.swift */; };
 		578D68381FA61B740055C6BB /* ConversationListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578D68371FA61B740055C6BB /* ConversationListAssembly.swift */; };
@@ -62,7 +61,6 @@
 		578D68251FA60AFC0055C6BB /* SaveProfileProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveProfileProtocol.swift; sourceTree = "<group>"; };
 		578D682B1FA60B030055C6BB /* Communicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Communicator.swift; sourceTree = "<group>"; };
 		578D682C1FA60B030055C6BB /* ConversationElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationElement.swift; sourceTree = "<group>"; };
-		578D682D1FA60B030055C6BB /* ConversationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsManager.swift; sourceTree = "<group>"; };
 		578D682F1FA60B030055C6BB /* MessageElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageElement.swift; sourceTree = "<group>"; };
 		578D68301FA60B030055C6BB /* MultipeerCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipeerCommunicator.swift; sourceTree = "<group>"; };
 		578D68371FA61B740055C6BB /* ConversationListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationListAssembly.swift; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 			children = (
 				57EB1C331FA79626004FBC02 /* Conversation */,
 				57A611801FA6716B00502106 /* Entity */,
-				578D682D1FA60B030055C6BB /* ConversationsManager.swift */,
 				578D68221FA60AFC0055C6BB /* GCDDataManager.swift */,
 				578D68231FA60AFC0055C6BB /* OperationDataManager..swift */,
 				578D68251FA60AFC0055C6BB /* SaveProfileProtocol.swift */,
@@ -416,7 +413,6 @@
 				57B32F781FA60875007ACC74 /* ConversationsCell.swift in Sources */,
 				57A10C8A1F72C9C4005516C4 /* AppDelegate.swift in Sources */,
 				57D6254D1F87B0FB004A5602 /* ConversationsListViewController.swift in Sources */,
-				578D68331FA60B030055C6BB /* ConversationsManager.swift in Sources */,
 				578D68281FA60AFC0055C6BB /* ProfileData.swift in Sources */,
 				57A611751FA66AA000502106 /* ConvesationModel.swift in Sources */,
 			);

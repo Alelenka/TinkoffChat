@@ -10,7 +10,7 @@ import Foundation
 
 class ConversationElement  {
     var name : String = ""
-    var userId: String = ""
+    var userID: String = ""
     var lastMessageDate: Date?
     var online : Bool = true
     var hasUnreadMessages : Bool = false
@@ -18,8 +18,8 @@ class ConversationElement  {
     
     var messages: [Message] = []
     
-    init?(withUser userId: String, userName: String?){
-        self.userId = userId
+    init?(withUser userID: String, userName: String?){
+        self.userID = userID
         if let name = userName {
             self.name = name
         } else {

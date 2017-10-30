@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct ConversationsListCellDisplayModel {
-    var userId: String
+    var userID: String
     var name: String
     var message: String?
     var date: Date?
@@ -59,7 +59,7 @@ class ConversationsListModel: IConversationsListModel, ICommunicationServiceDele
     
     func conversationCreated(conversation: ConversationElement) {
         let conversationsListCellDisplayModel = ConversationsListCellDisplayModel(
-            userId: conversation.userId,
+            userID: conversation.userID,
             name: conversation.name,
             message: conversation.lastMessage,
             date: conversation.lastMessageDate,
@@ -69,7 +69,7 @@ class ConversationsListModel: IConversationsListModel, ICommunicationServiceDele
     }
     
     func conversationChanged(conversation: ConversationElement) {
-        if let conversationIdx = conversationIndex(forUser: conversation.userId) {
+        if let conversationIdx = conversationIndex(forUser: conversation.userID) {
             var conversationItem = _conversations[conversationIdx]
             conversationItem.hasUnreadMessages = conversation.hasUnreadMessages
             conversationItem.date = conversation.lastMessageDate
@@ -87,7 +87,7 @@ class ConversationsListModel: IConversationsListModel, ICommunicationServiceDele
 
 
     private func conversationIndex(forUser userID: String) -> Int? {
-        if let ind = conversations.index(where: {$0.userId == userID }) {
+        if let ind = conversations.index(where: {$0.userID == userID }) {
             return ind
         } else {
             return nil
