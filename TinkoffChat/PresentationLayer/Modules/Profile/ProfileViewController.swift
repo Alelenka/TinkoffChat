@@ -176,7 +176,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // MARK: - Save
     
-    func saveProfile(manager: SaveInfoProtocol) {//<T: SaveInfoProtocol>(manager: T) {
+    func saveProfile(manager: SaveProfileProtocol) {//<T: SaveInfoProtocol>(manager: T) {
         activityIndicator.startAnimating()
         deactivateUI(true)
         

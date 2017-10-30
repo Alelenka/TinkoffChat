@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logApplicationInfo(stateFrom: "Not running")
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let controller = rootAssembly.conversationListModule.conversationsListViewController()
+        let controller = rootAssembly.conversationListModule.conversationsListViewController(withStorage: rootAssembly.conversationStorage)
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
         

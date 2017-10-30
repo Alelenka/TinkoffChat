@@ -11,32 +11,32 @@ import UIKit
 
 class ConversationsListAssembly {
     
-    func conversationsListViewController() -> UINavigationController {
+    func conversationsListViewController(withStorage dataStorage: ConversationStorage) -> UINavigationController {
         
         let storyboard = UIStoryboard(name: "ConversationsList", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
         let vc = navigationController.viewControllers.first as! ConversationsListViewController
-        let model = conversationsListModel()
+        let model = conversationsListModel(withStorage: dataStorage)
         model.delegate = vc
         vc.model = model
         
         return navigationController
     }
     
-    func conversationsListModel() -> IConversationsListModel {
+    func conversationsListModel(withStorage dataStorage: ConversationStorage) -> IConversationsListModel {
 
-        let currentCommunicationService = communicationService()
+        let currentCommunicationService = communicationService(withStorage: dataStorage)
         let conversationsListModel = ConversationsListModel.init(communicationService: currentCommunicationService)
         currentCommunicationService.delegate = conversationsListModel
 
         return conversationsListModel
     }
 
-    func communicationService() -> ICommunicationService {
+    func communicationService(withStorage dataStorage: ConversationStorage) -> ICommunicationService {
 
         let messageLoader = MessageLoader.init(parser: MessageParser(), maker: MessageMaker())
         let communicator = MultipeerCommunicator.init(withMessageLoader: messageLoader)
-        let communicationService = CommunicationService(communicator: communicator)
+        let communicationService = CommunicationService(communicator: communicator, conversationStorage: dataStorage)
         communicator.delegate = communicationService
         return communicationService
     }

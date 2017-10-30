@@ -22,6 +22,8 @@ class ConversationElement  {
         self.userId = userId
         if let name = userName {
             self.name = name
+        } else {
+            self.name = "noname"
         }
     }
     
@@ -29,6 +31,7 @@ class ConversationElement  {
         if (message.incoming){
             hasUnreadMessages = true
             lastMessageDate = message.date
+            lastMessage = message.text
         }
         
         messages.append(message)

@@ -8,6 +8,11 @@
 
 import Foundation
 
+struct MessageCellDisplayModel {
+    var text: String
+    var inbox: Bool
+}
+
 protocol IConversationModel: class {
     weak var delegate: IConversationModelDelegate? { get set }
     var userID: String { get set }
@@ -21,7 +26,7 @@ protocol IConversationModelDelegate: class {
     func setup(dataSource: [Message])
 }
 
-class ConversationModel: IConversationModel, ICommunicationServiceDelegate {
+class ConversationModel { //:IConversationModel, ICommunicationServiceDelegate 
     
     weak var delegate: IConversationModelDelegate?
     var communicationService: ICommunicationService
@@ -66,7 +71,6 @@ class ConversationModel: IConversationModel, ICommunicationServiceDelegate {
     }
     
     // MARK: - CommunicationServiceDelegate
-    
     func didLostUser(withID userID: String) {
         if userID == self.userID {
             delegate?.userWentOffline()

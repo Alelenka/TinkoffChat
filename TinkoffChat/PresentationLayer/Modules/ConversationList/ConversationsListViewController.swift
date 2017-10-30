@@ -9,10 +9,10 @@
 import UIKit
 
 class ConversationsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, IConversationsListModelDelegate {
-    
+
     private let showSegue = "ShowDialogSegue"
     var model: IConversationsListModel?
-    private var dataSource = [ConversationElement]()
+    private var dataSource = [ConversationsListCellDisplayModel]()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -34,7 +34,7 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
         super.didReceiveMemoryWarning()
     }
     
-    func setup(dataSource: [ConversationElement]) {
+    func setup(dataSource: [ConversationsListCellDisplayModel]) {
         self.dataSource = dataSource
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -51,11 +51,11 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell") as! ConversationsCell
         let conversation = dataSource[indexPath.row]
         cell.name = conversation.name
-        cell.date = conversation.lastMessageDate
+        cell.date = conversation.date
         cell.online = true
         cell.hasUnreadMessages = conversation.hasUnreadMessages
 
-        if let message = conversation.lastMessage {
+        if let message = conversation.message {
             cell.message = message
         } else {
             cell.message = ""
@@ -87,11 +87,11 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
                 print("Storyboard error")
                 return
             }
-            if let index = tableView.indexPathForSelectedRow {
+//            if let index = tableView.indexPathForSelectedRow {
 //                let conversation = conversationManager.converationList[index.row]
 //                conversationManager.selectCurrentConversation(withId: conversation.userId)
 //                destination.navigationItem.title = conversation.name
-            }
+//            }
         }
     }
     
