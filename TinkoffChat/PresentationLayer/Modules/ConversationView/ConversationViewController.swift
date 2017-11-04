@@ -13,7 +13,6 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var messageTextField: UITextField!
-    
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
@@ -39,7 +38,6 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
-        print("wtf %f %f %f", tableView.contentSize.height, tableView.contentOffset.y, tableView.frame.origin.y)
 
     }
     
@@ -119,6 +117,5 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         }
         model?.markAsRead()
         
-        print("wtf %f %f %f", tableView.contentSize.height, tableView.contentOffset.y, tableView.frame.origin.y)
     }
 }

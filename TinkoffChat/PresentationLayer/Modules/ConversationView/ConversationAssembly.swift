@@ -28,7 +28,6 @@ class ConversationAssembly {
         let conversationModel = ConversationModel.init(communicationService: communicationService, conversationService:service, userID: userID)
         communicationService.conversation = conversationModel
         service.delegate = conversationModel
-//        conversationModel.conversationService.delegate = conversationModel
 
         return conversationModel
     }

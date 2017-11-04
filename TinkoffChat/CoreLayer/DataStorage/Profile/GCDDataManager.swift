@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class GCDDataManader: SaveProfileProtocol {
+class GCDDataManader: IProfileProtocol {
     
     let fullPath: URL
     
@@ -18,10 +18,10 @@ class GCDDataManader: SaveProfileProtocol {
         self.fullPath = URL.getDocumentsDirectory().appendingPathComponent(fileName);
     }
     
-    func save(profileData: Data, completion: @escaping (_ result: Bool) -> ()) {
+    func save(profile: ProfileData, completion: @escaping (_ result: Bool) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                try profileData.write(to: self.fullPath, options: .atomic)
+                try profile.getSavingData().write(to: self.fullPath, options: .atomic)
                 
                 DispatchQueue.main.async {
                     completion(true)
@@ -36,7 +36,7 @@ class GCDDataManader: SaveProfileProtocol {
         }
     }
     
-    func readFile(completion: @escaping (_ result: ProfileData?) -> ()) {
+    func load(completion: @escaping (ProfileData?) -> Void) {
         DispatchQueue.global().async {
             do {
                 let data = try Data.init(contentsOf: self.fullPath)
@@ -44,6 +44,7 @@ class GCDDataManader: SaveProfileProtocol {
                 
                 if let object = json as? [String : String] {
                     let profile = ProfileData.init(with: object)
+                    
                     DispatchQueue.main.async {
                         completion(profile)
                     }
@@ -60,20 +61,5 @@ class GCDDataManader: SaveProfileProtocol {
                 }
             }
         }
-    }
-    
-    func compareChanges(newData: Data, completion: @escaping (_ saveNeeded: Bool) -> ()) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                let data = try Data.init(contentsOf: self.fullPath)
-                DispatchQueue.main.async {
-                    completion(data != newData)
-                }
-            } catch {
-                print("ololo")
-                completion(true)
-            }
-        }
-        
     }
 }

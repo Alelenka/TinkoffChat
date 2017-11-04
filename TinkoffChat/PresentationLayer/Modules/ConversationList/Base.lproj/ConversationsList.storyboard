@@ -112,7 +112,7 @@
                         <barButtonItem key="rightBarButtonItem" image="user-btn-icon" id="CNa-57-eIU">
                             <color key="tintColor" red="0.035294117649999998" green="0.039215686270000001" blue="0.050980392159999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="Pfb-UK-PFA" kind="presentation" id="bjG-zN-XiT"/>
+                                <segue destination="Pfb-UK-PFA" kind="presentation" identifier="ShowProfileSegue" id="bjG-zN-XiT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

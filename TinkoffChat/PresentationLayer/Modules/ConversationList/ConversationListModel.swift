@@ -74,14 +74,7 @@ class ConversationsListModel: IConversationsListModel, ICommunicationServiceDele
             conversationItem.hasUnreadMessages = conversation.hasUnreadMessages
             conversationItem.date = conversation.lastMessageDate
             conversationItem.message = conversation.lastMessage
-
             _conversations[conversationIdx] = conversationItem
-//            _conversations[conversationIdx].hasUnreadMessages = conversation.hasUnreadMessages
-//            _conversations[conversationIdx].date = conversation.lastMessageDate
-//
-//            _conversations[conversationIdx].message = conversation.lastMessage
-        } else {
-            print("oivai")
         }
     }
     

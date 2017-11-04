@@ -12,24 +12,20 @@ import UIKit
 class ProfileData {
     var profileName: String 
     var profileDescription: String
-    var profileImage: UIImage?
+    var profileImage: UIImage = #imageLiteral(resourceName: "demo-user")
     
     var changed: Bool = false
     
     init() {
         profileName = "Имя"
         profileDescription = "Описание"
-        profileImage = UIImage.init(named: "demo-user")
+        profileImage = #imageLiteral(resourceName: "demo-user")
     }
     
     init(with name: String?, description: String?, image: UIImage?) {
-        
-        let newName: String = name ?? "Имя"
-        profileName = newName
-        let newDescription: String = description ?? "Описание"
-        profileDescription = newDescription
-        let img = image ?? UIImage.init(named: "demo-user")
-        profileImage = img
+        profileName = name ?? "Имя"
+        profileDescription = description ?? "Описание"
+        profileImage = image ?? #imageLiteral(resourceName: "demo-user")
     }
     
     init(with data: [String: String]) {
@@ -37,12 +33,10 @@ class ProfileData {
         profileName = newName
         let newDescription: String = data["description"] ?? "Описание"
         profileDescription = newDescription
-        
         if let imageCode: String = data["image"], let imageData = Data(base64Encoded: imageCode, options: .ignoreUnknownCharacters){
-            let img = UIImage(data: imageData) ?? UIImage.init(named: "demo-user")
-            profileImage = img
+            profileImage = UIImage(data: imageData) ?? #imageLiteral(resourceName: "demo-user")
         } else {
-            profileImage = UIImage.init(named: "demo-user")
+            profileImage = #imageLiteral(resourceName: "demo-user")
         }
         
     }
@@ -50,18 +44,16 @@ class ProfileData {
     func getSavingData() -> Data {
         
         var strBase64 = ""
-        if let image = profileImage {
-            let imageData:Data = UIImagePNGRepresentation(image)!
-            strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
-        }
+        let imageData:Data = UIImagePNGRepresentation(profileImage)!
+        strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
         
         let jsonDict : [String : Any] = ["name": profileName,
                                          "description": profileDescription,
                                          "image": strBase64]
-        
         if JSONSerialization.isValidJSONObject(jsonDict) {
             do {
                 let rawData = try JSONSerialization.data(withJSONObject: jsonDict, options: .prettyPrinted)
+                
                 return rawData
             } catch {
                 //error
@@ -71,17 +63,6 @@ class ProfileData {
             //error
             return Data()
         }
-        
-    }
-    
-    
-    func isImageEqual(newImage: UIImage) -> Bool {
-        if let image = profileImage {
-            let oldData = UIImagePNGRepresentation(image)
-            let newData = UIImagePNGRepresentation(newImage)
-            return oldData == newData
-        }
-        return false
         
     }
     

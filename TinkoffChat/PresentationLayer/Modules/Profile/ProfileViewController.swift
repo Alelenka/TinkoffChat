@@ -8,10 +8,9 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
 
     //MARK: - Outlets
-    
     @IBOutlet weak var iconImgView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -19,13 +18,20 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var gcdButton: UIButton!
     @IBOutlet weak var operationButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet weak var contentTopConstraint: NSLayoutConstraint!
     
+    var model: IProfileModel?
     //MARK: -
     
-    var picker:UIImagePickerController = UIImagePickerController()
-    var currentProfile: ProfileData = ProfileData.init()
+    private var picker: UIImagePickerController = UIImagePickerController()
+    private var currentProfile: ProfileDisplayModel = ProfileDisplayModel.defaultProfile() {
+        didSet {
+            model?.update(profile: currentProfile)
+            if let changed = model?.profileChanged {
+                deactivateUI(!changed)
+            }
+        }
+    }
     
     //MARK: - Lifecicle
     
@@ -39,68 +45,29 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad() // Always
-        logInfo()
         
         nameTextField.delegate = self
         descriptionTextField.delegate = self
-    
-        iconImgView.image = nil
         picker.delegate = self
+        prepareUI()
         
-        chooseIconButton.layer.cornerRadius = chooseIconButton.frame.height/2.0
-        iconImgView.layer.cornerRadius = chooseIconButton.layer.cornerRadius
-        
-//        prepare(button: editButton)
-        prepare(button: gcdButton)
-        prepare(button: operationButton)
-        
-        deactivateUI()
-        
-        GCDDataManader.init().readFile() {  [weak self] (result) in
+        model?.load(managerType: .GCD , completionHandler: { [weak self] (profile) in
             if let strongSelf = self {
-                let profile = result ?? ProfileData.init()
                 strongSelf.currentProfile = profile
-//                strongSelf.nameLablel.text = profile.profileName
-//                strongSelf.descriptionLabel.text = profile.profileDescription
-                strongSelf.nameTextField.text = profile.profileName
-                strongSelf.descriptionTextField.text = profile.profileDescription
-                strongSelf.iconImgView.image = profile.profileImage
-                strongSelf.activityIndicator.stopAnimating()
+                strongSelf.updateUI()
             }
-        }
-
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)  // Always
-//        logInfo()
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)   // Always
-//        logInfo()
-        
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()  //Not neccessary
-//        logInfo()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()   //Not neccessary
-//        logInfo()
-    }
-    
+
     override func  viewWillDisappear(_ animated: Bool) {
         super .viewWillDisappear(animated) // Always
 //        logInfo()
         NotificationCenter.default.removeObserver(self)
-    }
-    override func  viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated) // Always
-//        logInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -109,16 +76,34 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
 
     // MARK: - UI
+    private func prepareUI() {
+        iconImgView.image = nil
+        chooseIconButton.layer.cornerRadius = chooseIconButton.frame.height/2.0
+        iconImgView.layer.cornerRadius = chooseIconButton.layer.cornerRadius
     
-    func prepare(button: UIButton) {
+        //        prepare(button: editButton)
+        prepare(button: gcdButton)
+        prepare(button: operationButton)
+    
+        deactivateUI(true)
+    }
+    
+    private func prepare(button: UIButton) {
         button.layer.borderWidth = 2.0
         button.layer.borderColor = UIColor.black.cgColor
         button.layer.cornerRadius = 15.0
     }
     
-    func deactivateUI(){
-        operationButton.isEnabled = currentProfile.changed
-        gcdButton.isEnabled = currentProfile.changed
+    private func deactivateUI(_ deactivate: Bool){
+        operationButton.isEnabled = !deactivate
+        gcdButton.isEnabled = !deactivate
+    }
+    
+    private func updateUI() {
+        nameTextField.text = currentProfile.name
+        descriptionTextField.text = currentProfile.info
+        iconImgView.image = currentProfile.photo
+        activityIndicator.stopAnimating()
     }
     
     // MARK: - Logs
@@ -160,46 +145,44 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @IBAction func gcdButtonAction(_ sender: Any) {
-        let gcdDataManager = GCDDataManader.init()
-        saveProfile(manager: gcdDataManager)
+        saveProfile(managerType: .GCD)
     }
     
     @IBAction func operationButtonAction(_ sender: Any) {
-        let operationDataManager = OperationDataManager.init()
-        saveProfile(manager: operationDataManager)
+        saveProfile(managerType: .operationQueue)
     }
     
-    
     // MARK: - Save
-    
-    func saveProfile(manager: SaveProfileProtocol) {//<T: SaveInfoProtocol>(manager: T) {
-        activityIndicator.startAnimating()
-        deactivateUI()
-        
-        if currentProfile.changed {
-            manager.save(profileData: currentProfile.getSavingData()) {  [weak self] (result) in
+    func saveProfile(managerType: ProfileManagerType) {//<T: SaveInfoProtocol>(manager: T) {
+        if let changed = model?.profileChanged, changed {
+            activityIndicator.startAnimating()
+            deactivateUI(true)
+            model?.save(managerType: managerType, completionHandler: { [weak self] (success) in
                 if let strongSelf = self {
                     strongSelf.activityIndicator.stopAnimating()
-                    strongSelf.deactivateUI()
-                    if result {
+                    strongSelf.deactivateUI(false)
+                    if success {
                         strongSelf.showOkAlert(with: "Данные сохранены", message: "")
-                        strongSelf.currentProfile.changed = false
                     } else {
-                        let alert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
-                        let ok = UIAlertAction(title: "OK", style:.default, handler: nil)
-                        let action = UIAlertAction(title: "Повторить", style:.default, handler: { _ in
-                            strongSelf.saveProfile(manager: manager)
-                        })
-                        
-                        alert.addAction(ok)
-                        alert.addAction(action)
-                        
-                        strongSelf.present(alert, animated: true, completion: nil)
+                        strongSelf.saveErrorAlert(withh: managerType)
                     }
+
                 }
-            }
+            })
         }
+    }
+    
+    private func saveErrorAlert(withh managerType: ProfileManagerType) {
+        let alert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style:.default, handler: nil)
+        let action = UIAlertAction(title: "Повторить", style:.default, handler: { _ in
+            self.saveProfile(managerType: managerType)
+        })
         
+        alert.addAction(ok)
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     //MARK: - Choose Photo Func
@@ -222,47 +205,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             showOkAlert(with: "Вниание", message: "На данном девайсе нет камеры")
         }
     }
-    
-    //MARK: - imagePickerController
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let choosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        if !currentProfile.isImageEqual(newImage: choosenImage){
-            currentProfile.profileImage = choosenImage
-            currentProfile.changed = true;
-            deactivateUI()
-        }
-        
-        iconImgView.image = choosenImage
-        dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: - TextField
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
-        if (textField == nameTextField){
-            if currentProfile.profileName != textField.text {
-                currentProfile.profileName = textField.text!
-                currentProfile.changed = true
-            }
-        } else if (textField == descriptionTextField){
-            if currentProfile.profileDescription != textField.text {
-                currentProfile.profileDescription = textField.text!
-                currentProfile.changed = true
-            }
-        }
-        
-        deactivateUI()
-        
-        return false
-    }
-    
+}
+
     // MARK: - keyboard
-    
+extension ProfileViewController {
     @objc func keyboardNotification(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
@@ -282,6 +228,42 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                            completion: nil)
         }
     }
+}
 
+    // MARK: - imagePickerController
+extension ProfileViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let choosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        currentProfile.photo = choosenImage
+        iconImgView.image = choosenImage
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+    // MARK: - UITextFieldDelegate
+extension ProfileViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        if (textField == nameTextField){
+            currentProfile.name = textField.text!
+        } else if (textField == descriptionTextField){
+            currentProfile.info = textField.text!
+        }
+        return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if (textField == nameTextField){
+            currentProfile.name = textField.text!
+        } else if (textField == descriptionTextField){
+            currentProfile.info = textField.text!
+        }
+    }
 }
 

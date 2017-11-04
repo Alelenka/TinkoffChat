@@ -19,7 +19,10 @@ class RootAssembly {
         
     }()
     
-    static let conversationModel: ConversationAssembly = {
+    static let conversationModule: ConversationAssembly = {
         return ConversationAssembly(with: conversationStorage)
     }()
+    
+    static let profileModule = ProfileAssembly()
+
 }

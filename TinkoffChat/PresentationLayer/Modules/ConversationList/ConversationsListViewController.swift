@@ -10,7 +10,8 @@ import UIKit
 
 class ConversationsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, IConversationsListModelDelegate {
 
-    private let showSegue = "ShowDialogSegue"
+    private let showConversationSegue = "ShowDialogSegue"
+    private let showProfileSegue = "ShowProfileSegue"
     var model: IConversationsListModel?
     private var dataSource = [ConversationsListCellDisplayModel]()
     
@@ -79,21 +80,31 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     //MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSegue {
+        if segue.identifier == showConversationSegue {
             guard let conversationVC = segue.destination as? ConversationViewController else {
                 print("Storyboard error")
                 return
             }
-            
             guard let communicationService = model?.communicationService else {
                 print("Error list model")
                 return
             }
-            
             if let index = tableView.indexPathForSelectedRow {
                 let conversation = dataSource[index.row]
-                RootAssembly.conversationModel.setup(inViewController: conversationVC, communicationService: communicationService, userID: conversation.userID)
+                RootAssembly.conversationModule.setup(inViewController: conversationVC, communicationService: communicationService, userID: conversation.userID)
             }
+
+        } else if segue.identifier == showProfileSegue {
+            guard let navigationVC = segue.destination as? UINavigationController else {
+                print("Storyboard error")
+                return
+            }
+            guard let profileVC = navigationVC.viewControllers.first as? ProfileViewController else {
+                print("Storyboard profile error")
+                return
+            }
+            
+            RootAssembly.profileModule.setup(inViewController: profileVC)
         }
     }
     
