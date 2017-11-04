@@ -24,14 +24,14 @@ class ProfileData {
     
     init(with name: String?, description: String?, image: UIImage?) {
         profileName = name ?? "Имя"
-        profileDescription = description ?? "Описание"
+        profileDescription = description ?? "Введите описание"
         profileImage = image ?? #imageLiteral(resourceName: "demo-user")
     }
     
     init(with data: [String: String]) {
         let newName: String = data["name"] ?? "Имя"
         profileName = newName
-        let newDescription: String = data["description"] ?? "Описание"
+        let newDescription: String = data["description"] ?? "Введите описание"
         profileDescription = newDescription
         if let imageCode: String = data["image"], let imageData = Data(base64Encoded: imageCode, options: .ignoreUnknownCharacters){
             profileImage = UIImage(data: imageData) ?? #imageLiteral(resourceName: "demo-user")

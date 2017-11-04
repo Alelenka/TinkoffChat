@@ -14,10 +14,15 @@ class ProfileAssembly {
     func setup(inViewController vc: ProfileViewController) {
         let model = ProfileModel.init(profileService: profileService())
         vc.model = model
-        
     }
     
-    private func profileService() ->IProfileService {
-        return ProfileService.init(withManagers: GCDDataManader(), operation: OperationDataManager())
+    private func profileService() -> IProfileService {
+        let storage = storageManager()
+        return ProfileService.init(withManagers: GCDDataManader(), operation: OperationDataManager(), storage: storage)
+    }
+    
+    private func storageManager() -> StorageManager {
+        let dataStack = CoreDataStack()
+        return StorageManager.init(withStack: dataStack)
     }
 }

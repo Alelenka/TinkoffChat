@@ -12,6 +12,7 @@ import UIKit
 enum ProfileManagerType {
     case GCD
     case operationQueue
+    case coreData
 }
 
 protocol IProfileModel {

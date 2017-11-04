@@ -17,10 +17,12 @@ class ProfileService: IProfileService {
     
     private let gcdManager: GCDDataManader
     private let operationManger: OperationDataManager
+    private let storageManager: StorageManager
     
-    init(withManagers gcd: GCDDataManader, operation: OperationDataManager) {
+    init(withManagers gcd: GCDDataManader, operation: OperationDataManager, storage: StorageManager) {
         self.gcdManager = gcd
         self.operationManger = operation
+        self.storageManager = storage
     }
     
     func save(profile: ProfileData, managerType: ProfileManagerType, completionHandler: @escaping (Bool) -> ()) {
@@ -40,6 +42,8 @@ class ProfileService: IProfileService {
             return gcdManager
         } else if type == .operationQueue {
             return operationManger
+        } else if type == .coreData{
+            return storageManager
         } else {
             print("Unknown DataManager")
             return nil

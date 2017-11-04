@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
     @IBOutlet weak var chooseIconButton: UIButton!
     @IBOutlet weak var gcdButton: UIButton!
     @IBOutlet weak var operationButton: UIButton!
+    @IBOutlet weak var coreDataBtn: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var contentTopConstraint: NSLayoutConstraint!
     
@@ -51,7 +52,7 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         picker.delegate = self
         prepareUI()
         
-        model?.load(managerType: .GCD , completionHandler: { [weak self] (profile) in
+        model?.load(managerType: .coreData, completionHandler: { [weak self] (profile) in
             if let strongSelf = self {
                 strongSelf.currentProfile = profile
                 strongSelf.updateUI()
@@ -84,6 +85,7 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         //        prepare(button: editButton)
         prepare(button: gcdButton)
         prepare(button: operationButton)
+        prepare(button: coreDataBtn)
     
         deactivateUI(true)
     }
@@ -97,6 +99,7 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
     private func deactivateUI(_ deactivate: Bool){
         operationButton.isEnabled = !deactivate
         gcdButton.isEnabled = !deactivate
+        coreDataBtn.isEnabled = !deactivate
     }
     
     private func updateUI() {
@@ -150,6 +153,10 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
     
     @IBAction func operationButtonAction(_ sender: Any) {
         saveProfile(managerType: .operationQueue)
+    }
+    
+    @IBAction func coreDataButtinAction(_ sender: Any) {
+        saveProfile(managerType: .coreData)
     }
     
     // MARK: - Save
