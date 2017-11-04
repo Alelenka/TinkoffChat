@@ -11,21 +11,24 @@ import UIKit
 
 class ConversationAssembly {
     
-    var dataStorage: ConversationStorage? // ??????
+    var dataStorage: ConversationStorage // ??????
+    
+    init(with storage: ConversationStorage) {
+        self.dataStorage = storage
+    }
     
     func setup(inViewController vc: ConversationViewController, communicationService: ICommunicationService, userID: String) {
-        if let storage = dataStorage {
-            let model = conversationModel(communicationService: communicationService, dataStorage: storage, userID: userID)
-            vc.model = model
-            model.delegate = vc
-        }
+        let model = conversationModel(communicationService: communicationService, dataStorage: dataStorage, userID: userID)
+        vc.model = model
+        model.delegate = vc
     }
     
     private func conversationModel(communicationService: ICommunicationService, dataStorage: ConversationStorage, userID: String) -> IConversationModel {
         let service = conversationSercive(communicator: communicationService.communicator, storage: dataStorage)
         let conversationModel = ConversationModel.init(communicationService: communicationService, conversationService:service, userID: userID)
         communicationService.conversation = conversationModel
-        conversationModel.conversationService.delegate = conversationModel
+        service.delegate = conversationModel
+//        conversationModel.conversationService.delegate = conversationModel
 
         return conversationModel
     }

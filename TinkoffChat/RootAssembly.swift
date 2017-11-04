@@ -9,7 +9,17 @@
 import Foundation
 
 class RootAssembly {
-    var conversationStorage = ConversationStorage()
-    var conversationListModule: ConversationsListAssembly = ConversationsListAssembly()
-    var conversationModel: ConversationAssembly = ConversationAssembly()
+    
+    private static let conversationStorage: ConversationStorage = {
+            return ConversationStorage()
+    }()
+    
+    static let conversationListModule: ConversationsListAssembly = {
+        return ConversationsListAssembly(with: conversationStorage)
+        
+    }()
+    
+    static let conversationModel: ConversationAssembly = {
+        return ConversationAssembly(with: conversationStorage)
+    }()
 }

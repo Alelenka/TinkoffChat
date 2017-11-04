@@ -14,7 +14,11 @@ class ConversationElement  {
     var lastMessageDate: Date?
     var online : Bool = true
     var hasUnreadMessages : Bool = false
-    var lastMessage: String?
+    var lastMessage: String? {
+        get {
+            return messages.last?.text
+        }
+    }
     
     var messages: [Message] = []
     
@@ -28,11 +32,9 @@ class ConversationElement  {
     }
     
     func addMessage(message: Message){
-        if (message.incoming){
-            hasUnreadMessages = true
-            lastMessageDate = message.date
-            lastMessage = message.text
-        }
+        hasUnreadMessages = message.incoming
+        lastMessageDate = message.date
+//        lastMessage = message.text
         
         messages.append(message)
     }

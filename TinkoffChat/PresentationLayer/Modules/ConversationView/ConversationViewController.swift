@@ -32,15 +32,15 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
-            navigationItem.title = model?.userName
-        if let messages = model?.messages {
-            setup(dataSource: messages)
-        }
         
+        navigationItem.title = model?.userName
+        model?.checkIfConversationExist()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
+        print("wtf %f %f %f", tableView.contentSize.height, tableView.contentOffset.y, tableView.frame.origin.y)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -69,9 +69,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         
         if let str = messageTextField.text {
             if str.count > 0 {
-                
                 model?.sendMessage(string: str)
-                
                 self.messageTextField.text = ""
             }
         }
@@ -109,13 +107,18 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 
     // MARK: - ModelDelegate
     func userWentOffline() {
-        sendButton.isEnabled = false
+        DispatchQueue.main.async {
+            self.sendButton.isEnabled = false
+        }
     }
     
     func setup(dataSource: [MessageCellDisplayModel]) {
-        self.dataSource = dataSource
         DispatchQueue.main.async {
+            self.dataSource = dataSource
             self.tableView.reloadData()
         }
+        model?.markAsRead()
+        
+        print("wtf %f %f %f", tableView.contentSize.height, tableView.contentOffset.y, tableView.frame.origin.y)
     }
 }

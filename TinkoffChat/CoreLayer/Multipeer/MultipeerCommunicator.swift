@@ -19,7 +19,7 @@ class MultipeerCommunicator: NSObject, ICommunicator {
     private var messageLoader: IMessageLoader!
     
     private let serviceType = "tinkoff-chat"
-    private let discoveryInfo = ["userName" : "a.belyaeva"]
+    private let discoveryInfo = ["userName" : UIDevice.current.name] //a.belyaeva 
     private let messageEvent = "TextMessage"
     
     //ICommunicator
@@ -131,9 +131,10 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate  {
         
         if !session.connectedPeers.contains(peerID) {
             browser.invitePeer(peerID, to: session, withContext: nil, timeout: 30)
-            let userName = info?["userName"] ?? "Noname"
-            delegate?.didFoundUser(userID: peerID.displayName, userName: userName)
         }
+        
+        let userName = info?["userName"] ?? "Noname"
+        delegate?.didFoundUser(userID: peerID.displayName, userName: userName)
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {

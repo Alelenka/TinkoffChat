@@ -11,7 +11,13 @@ import UIKit
 
 class ConversationsListAssembly {
     
-    func conversationsListViewController(withStorage dataStorage: ConversationStorage) -> UINavigationController {
+    private var dataStorage: ConversationStorage
+    
+    init(with storage: ConversationStorage){
+        self.dataStorage = storage
+    }
+    
+    func conversationsListViewController() -> UINavigationController {
         
         let storyboard = UIStoryboard(name: "ConversationsList", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController

@@ -22,8 +22,6 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
         tableView.estimatedRowHeight = 50.0
         tableView.delegate = self
         tableView.dataSource = self
-//        conversationManager.listDelegate = self
-//        communicator.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,7 +79,6 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     //MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         if segue.identifier == showSegue {
             guard let conversationVC = segue.destination as? ConversationViewController else {
                 print("Storyboard error")
@@ -95,10 +92,7 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
             
             if let index = tableView.indexPathForSelectedRow {
                 let conversation = dataSource[index.row]
-                let conversationAssembler = ConversationAssembly()
-                let userID = conversation.userID
-                
-                conversationAssembler.setup(inViewController: conversationVC, communicationService: communicationService, userID: userID)
+                RootAssembly.conversationModel.setup(inViewController: conversationVC, communicationService: communicationService, userID: conversation.userID)
             }
         }
     }

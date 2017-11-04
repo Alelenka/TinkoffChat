@@ -53,11 +53,12 @@ class ConversationStorage: IConversationStorageData, IConversationStorage {
     }
     
     func getUserName(withId userID: String) -> String {
-        if let ind = converationList.index(where: {$0.userID == userID }) {
-            return converationList[ind].name
-        } else {
-            return "noname"
-        }
+//        if let ind = converationList.index(where: {$0.userID == userID }) {
+//            return converationList[ind].name
+//        } else {
+//            return "noname"
+//        }
+        return converationList.first(where: { $0.userID == userID })?.name ?? "noname"
     }
     
     func getConversation(forUser userID: String) -> [Message] {
@@ -67,6 +68,7 @@ class ConversationStorage: IConversationStorageData, IConversationStorage {
             print("Error findning user conversation")
             return []
         }
+//        return converationList.first(where: { $0.userID == userID })?.messages ?? []
     }
     
     // MARK: - Storage
@@ -85,8 +87,11 @@ class ConversationStorage: IConversationStorageData, IConversationStorage {
     private func save(message: Message, userID: String) {
         if let ind = converationList.index(where: {$0.userID == userID}) {
             converationList[ind].addMessage(message: message)
+            
             delegate?.conversationChanged(conversation: converationList[ind])
             conversation?.updateConversation(withMessage: message)
+        } else {
+            print("get unknown message!!!!!!")
         }
     }
     

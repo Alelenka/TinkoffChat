@@ -12,18 +12,14 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    private let rootAssembly = RootAssembly()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         logApplicationInfo(stateFrom: "Not running")
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let controller = rootAssembly.conversationListModule.conversationsListViewController(withStorage: rootAssembly.conversationStorage)
+        let controller = RootAssembly.conversationListModule.conversationsListViewController()
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
-        
-        rootAssembly.conversationModel.dataStorage = rootAssembly.conversationStorage
         
         return true
     }

@@ -19,7 +19,7 @@ public extension Date {
             return dateformatter.string(from: self)
         } else {
             
-            dateformatter.dateFormat = "hh:mm"
+            dateformatter.dateFormat = "HH:mm"
             return dateformatter.string(from: self)
         }
     }

@@ -15,11 +15,10 @@ struct MessageCellDisplayModel {
 
 protocol IConversationModel: class {
     weak var delegate: IConversationModelDelegate? { get set }
-    var userID: String { get set }
     var userName: String { get set }
-    var messages: [MessageCellDisplayModel] { get set }
     func sendMessage(string text: String)
     func markAsRead()
+    func checkIfConversationExist()
 }
 
 protocol IConversationModelDelegate: class {
@@ -28,13 +27,14 @@ protocol IConversationModelDelegate: class {
 }
 
 class ConversationModel: IConversationModel, ICommunicationServiceConversationDelegate, ConversationServiceDelegate {
-
+    
     weak var delegate: IConversationModelDelegate?
-    var communicationService: ICommunicationService
-    var conversationService: IConversationService
-    var userID: String
+    private var communicationService: ICommunicationService
+    private var conversationService: IConversationService
+    private var userID: String
+    private var messages: [MessageCellDisplayModel] = []
+    
     var userName: String
-    var messages: [MessageCellDisplayModel] = []
     
     init(communicationService: ICommunicationService, conversationService: IConversationService, userID: String) {
         self.communicationService = communicationService
@@ -57,6 +57,7 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     }
     
     func sendMessage(string text: String) {
+        
         conversationService.sendMessage(string: text, to: userID) { (success: Bool, error: Error?) in
             if let error = error {
                 print("Error sending message: \(error)")
@@ -72,6 +73,12 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
         communicationService.markConversationAsRead(withuserID: userID)
     }
     
+    func checkIfConversationExist() {
+        if messages.count > 0 {
+            messageHistory = messages
+        }
+    }
+    
     // MARK: - CommunicationServiceDelegate
     func didLostUser(withID userID: String) {
         if userID == self.userID {
@@ -81,11 +88,13 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     
     func didReceive(message: Message) {
         let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
-        messageHistory.append(newMessage)
+        messages.append(newMessage)
+        messageHistory = messages
     }
     
     func updateMessages(message: Message) {
         let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
-        messageHistory.append(newMessage)
+        messages.append(newMessage)
+        messageHistory = messages
     }
 }

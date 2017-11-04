@@ -16,7 +16,7 @@
                 <viewControllerPlaceholder storyboardName="Profile" id="Pfb-UK-PFA" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tex-b6-Fo8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1570" y="-879"/>
+            <point key="canvasLocation" x="1493" y="-942"/>
         </scene>
         <!--ConversationView-->
         <scene sceneID="bzk-Rq-zBb">
@@ -24,27 +24,27 @@
                 <viewControllerPlaceholder storyboardName="ConversationView" id="zeB-cx-MtD" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yNk-f9-9ju" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1578" y="-630"/>
+            <point key="canvasLocation" x="1548" y="-631"/>
         </scene>
         <!--Tinkoff Chat-->
         <scene sceneID="X8u-2b-wjw">
             <objects>
-                <viewController id="T8R-lP-h0J" customClass="ConversationsListViewController" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="T8R-lP-h0J" customClass="ConversationsListViewController" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="buM-n1-POQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="53" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EV0-HE-T4m">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="53" estimatedRowHeight="-1" sectionHeaderHeight="35" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EV0-HE-T4m">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="cBS-5E-hDB">
-                                    <rect key="frame" x="0.0" y="94" width="375" height="1"/>
+                                    <rect key="frame" x="0.0" y="101" width="375" height="1"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatCell" rowHeight="66" id="BOx-X6-1LO" customClass="ConversationsCell" customModule="TinkoffChat" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="66"/>
+                                        <rect key="frame" x="0.0" y="35" width="375" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BOx-X6-1LO" id="Gg7-wG-Cx2">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="65.5"/>
@@ -58,6 +58,9 @@
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hh:mm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WRo-Yg-de8">
                                                     <rect key="frame" x="325" y="12" width="42" height="16"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="tos-M8-6Lg"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -100,8 +103,8 @@
                         <constraints>
                             <constraint firstItem="ra7-4U-k8D" firstAttribute="bottom" secondItem="EV0-HE-T4m" secondAttribute="bottom" id="EvX-WD-i3k"/>
                             <constraint firstItem="EV0-HE-T4m" firstAttribute="leading" secondItem="ra7-4U-k8D" secondAttribute="leading" id="Gc0-M4-YPE"/>
-                            <constraint firstItem="ra7-4U-k8D" firstAttribute="top" secondItem="EV0-HE-T4m" secondAttribute="top" constant="44" id="Wfu-Cp-pq2"/>
                             <constraint firstItem="ra7-4U-k8D" firstAttribute="trailing" secondItem="EV0-HE-T4m" secondAttribute="trailing" id="gs9-W4-BP6"/>
+                            <constraint firstItem="EV0-HE-T4m" firstAttribute="top" secondItem="ra7-4U-k8D" secondAttribute="top" id="vJT-WL-h3F"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ra7-4U-k8D"/>
                     </view>
@@ -113,6 +116,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="tableView" destination="EV0-HE-T4m" id="QOV-8r-bob"/>
                     </connections>
@@ -137,7 +141,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kfk-Tj-Rdz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-91" y="-654"/>
+            <point key="canvasLocation" x="178" y="-654"/>
         </scene>
     </scenes>
     <resources>
