@@ -13,12 +13,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     //MARK: - Outlets
     
     @IBOutlet weak var iconImgView: UIImageView!
-//    @IBOutlet weak var nameLablel: UILabel!
-//    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var chooseIconButton: UIButton!
-//    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var gcdButton: UIButton!
     @IBOutlet weak var operationButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -57,7 +54,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         prepare(button: gcdButton)
         prepare(button: operationButton)
         
-        deactivateUI(false)
+        deactivateUI()
         
         GCDDataManader.init().readFile() {  [weak self] (result) in
             if let strongSelf = self {
@@ -119,10 +116,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         button.layer.cornerRadius = 15.0
     }
     
-    func deactivateUI(_ enabled: Bool){
-        
-        operationButton.isEnabled = enabled
-        gcdButton.isEnabled = enabled
+    func deactivateUI(){
+        operationButton.isEnabled = currentProfile.changed
+        gcdButton.isEnabled = currentProfile.changed
     }
     
     // MARK: - Logs
@@ -178,13 +174,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func saveProfile(manager: SaveProfileProtocol) {//<T: SaveInfoProtocol>(manager: T) {
         activityIndicator.startAnimating()
-        deactivateUI(true)
+        deactivateUI()
         
         if currentProfile.changed {
             manager.save(profileData: currentProfile.getSavingData()) {  [weak self] (result) in
                 if let strongSelf = self {
                     strongSelf.activityIndicator.stopAnimating()
-                    strongSelf.deactivateUI(false)
+                    strongSelf.deactivateUI()
                     if result {
                         strongSelf.showOkAlert(with: "Данные сохранены", message: "")
                         strongSelf.currentProfile.changed = false
@@ -238,7 +234,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         if !currentProfile.isImageEqual(newImage: choosenImage){
             currentProfile.profileImage = choosenImage
             currentProfile.changed = true;
-            deactivateUI(false)
+            deactivateUI()
         }
         
         iconImgView.image = choosenImage
@@ -260,7 +256,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
         }
         
-        deactivateUI(currentProfile.changed)
+        deactivateUI()
         
         return false
     }
