@@ -19,7 +19,7 @@ class MultipeerCommunicator: NSObject, ICommunicator {
     private var messageLoader: IMessageLoader!
     
     private let serviceType = "tinkoff-chat"
-    private let discoveryInfo = ["userName" : UIDevice.current.name] //a.belyaeva 
+    private let discoveryInfo = ["userName" : a.belyaeva] // UIDevice.current.name //for test on mac+device
     private let messageEvent = "TextMessage"
     
     //ICommunicator
