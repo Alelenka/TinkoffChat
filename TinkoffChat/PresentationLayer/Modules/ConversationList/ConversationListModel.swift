@@ -20,7 +20,7 @@ struct ConversationsListCellDisplayModel {
 
 protocol IConversationsListModel: class {
     var communicationService: ICommunicationService { get set }
-    func setAllUsersOffline(completionHandler: @escaping () -> () )
+//    func setAllUsersOffline(completionHandler: @escaping () -> () )
     func getSections() -> Int
     func getRowsIn(section: Int) -> Int
     func getConversation(at indexPath: IndexPath) -> ConversationsListCellDisplayModel
@@ -68,8 +68,8 @@ class ConversationsListModel: IConversationsListModel {
     }
     
     func setAllUsersOffline(completionHandler: @escaping () -> () ){
-        communicationService.setAllUsersOffline {
-            completionHandler()
-        }
+//        communicationService.setAllUsersOffline {
+//            completionHandler()
+//        }
     }
 }

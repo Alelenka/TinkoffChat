@@ -19,14 +19,11 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        model?.setAllUsersOffline {
-            self.model?.communicationService.fetchedResuts.tableView = self.tableView
-            self.tableView.rowHeight =  UITableViewAutomaticDimension
-            self.tableView.estimatedRowHeight = 50.0
-            self.tableView.delegate = self
-            self.tableView.dataSource = self
-        }
-        
+        model?.communicationService.fetchedResuts.tableView = self.tableView
+        tableView.rowHeight =  UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 50.0
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {

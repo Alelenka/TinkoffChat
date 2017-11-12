@@ -14,7 +14,7 @@ class RootAssembly {
         return CoreDataStack()
     }()
     
-    private static let conversationStorage: ConversationStorage = {
+    static let conversationStorage: ConversationStorage = {
         return ConversationStorage(with: coreDataStack)
     }()
     

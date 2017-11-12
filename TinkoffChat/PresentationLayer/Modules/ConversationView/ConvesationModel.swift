@@ -99,7 +99,7 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
             
             let messageDisplayModel = MessageCellDisplayModel(
                 text: message.text ?? "something wrong",
-                inbox: message.author?.appUser != nil)
+                inbox: message.author?.appUser == nil)
             
             return messageDisplayModel
         }
