@@ -13,13 +13,13 @@ class MultipeerCommunicator: NSObject, ICommunicator {
     
     private var sessions = [ String : MCSession ]()
     
-    private let peerID = MCPeerID(displayName: UUID().uuidString)
+    private let peerID = MCPeerID(displayName: UIDevice.current.identifierForVendor!.uuidString)
     private var browser: MCNearbyServiceBrowser!
     private var advertiser: MCNearbyServiceAdvertiser!
     private var messageLoader: IMessageLoader!
     
     private let serviceType = "tinkoff-chat"
-    private let discoveryInfo = ["userName" : "a.belyaeva"] // UIDevice.current.name //for test on mac+device
+    private let discoveryInfo = ["userName" : UIDevice.current.name] // UIDevice.current.name //for test on mac+device "a.belyaeva"
     private let messageEvent = "TextMessage"
     
     //ICommunicator
@@ -29,6 +29,8 @@ class MultipeerCommunicator: NSObject, ICommunicator {
     init(withMessageLoader loader: MessageLoader) {
         
         super.init()
+        
+        print(peerID)
         
         messageLoader = loader
         

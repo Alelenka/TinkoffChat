@@ -22,6 +22,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        model?.conversationService.fetchedResuts.tableView = tableView
         tableView.rowHeight =  UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 50.0
         
@@ -37,8 +38,8 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        model?.markAsRead()
         NotificationCenter.default.removeObserver(self)
-
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,11 +49,19 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: - TableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        if let num = model?.getRowsIn(section: section) {
+            return num
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = dataSource[indexPath.row]
+//        let message = dataSource[indexPath.row]
+        
+        guard let message = model?.getConversation(at: indexPath) else {
+            return UITableViewCell()
+        }
+        
         var identifier = "OutgoingMessage"
         if message.inbox {
             identifier = "IcomingMessage"
@@ -111,11 +120,10 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func setup(dataSource: [MessageCellDisplayModel]) {
-        DispatchQueue.main.async {
-            self.dataSource = dataSource
-            self.tableView.reloadData()
-        }
-        model?.markAsRead()
-        
+//        DispatchQueue.main.async {
+//            self.dataSource = dataSource
+//            self.tableView.reloadData()
+//        }
+//        model?.markAsRead()        
     }
 }

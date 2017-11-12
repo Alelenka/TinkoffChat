@@ -14,8 +14,11 @@ struct MessageCellDisplayModel {
 }
 
 protocol IConversationModel: class {
+    var conversationService: IConversationService { get set }
     weak var delegate: IConversationModelDelegate? { get set }
     var userName: String { get set }
+    func getRowsIn(section: Int) -> Int
+    func getConversation(at indexPath: IndexPath) -> MessageCellDisplayModel
     func sendMessage(string text: String)
     func markAsRead()
     func checkIfConversationExist()
@@ -30,20 +33,20 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     
     weak var delegate: IConversationModelDelegate?
     private var communicationService: ICommunicationService
-    private var conversationService: IConversationService
-    private var userID: String
+    var conversationService: IConversationService
+    private var conversationID: String
     private var messages: [MessageCellDisplayModel] = []
     
     var userName: String
     
-    init(communicationService: ICommunicationService, conversationService: IConversationService, userID: String) {
+    init(communicationService: ICommunicationService, conversationService: IConversationService, conversationID: String) {
         self.communicationService = communicationService
         self.conversationService = conversationService
         
-        self.userID = userID
-        self.userName = self.conversationService.getUserName(withID: self.userID)
+        self.conversationID = conversationID
+        self.userName = self.conversationService.getUserName(withID: self.conversationID)
         
-        for message in self.conversationService.getUserConversation(withID: self.userID) {
+        for message in self.conversationService.getUserConversation(withID: self.conversationID) {
             let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
             self.messages.append(newMessage)
         }
@@ -58,7 +61,7 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     
     func sendMessage(string text: String) {
         
-        conversationService.sendMessage(string: text, to: userID) { (success: Bool, error: Error?) in
+        conversationService.sendMessage(string: text, to: conversationID) { (success: Bool, error: Error?) in
             if let error = error {
                 print("Error sending message: \(error)")
             } else if success {
@@ -70,7 +73,7 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     }
     
     func markAsRead() {
-        communicationService.markConversationAsRead(withuserID: userID)
+        communicationService.markConversationAsRead(withuserID: conversationID)
     }
     
     func checkIfConversationExist() {
@@ -79,20 +82,45 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
         }
     }
     
-    // MARK: - CommunicationServiceDelegate
-    func didLostUser(withID userID: String) {
-        if userID == self.userID {
-            delegate?.userWentOffline()
+    // MARK: - FRC
+    func getRowsIn(section: Int) -> Int {
+        guard let frc = conversationService.fetchedResuts.frc,
+            let sections = frc.sections else {
+                return 0
         }
+
+        return sections[section].numberOfObjects
     }
     
-    func didReceive(message: Message) {
+    func getConversation(at indexPath: IndexPath) -> MessageCellDisplayModel {
+        
+        
+        if let message = conversationService.fetchedResuts.frc?.object(at: indexPath) {
+            
+            let messageDisplayModel = MessageCellDisplayModel(
+                text: message.text ?? "something wrong",
+                inbox: message.author?.appUser != nil)
+            
+            return messageDisplayModel
+        }
+        
+        return MessageCellDisplayModel(text: "", inbox: false)
+    }
+    
+    // MARK: - CommunicationServiceDelegate
+    func didLostUser(withID userID: String) {
+//        if userID == self.userID {
+//            delegate?.userWentOffline()
+//        }
+    }
+    
+    func didReceive(message: MessageElement) {
         let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
         messages.append(newMessage)
         messageHistory = messages
     }
     
-    func updateMessages(message: Message) {
+    func updateMessages(message: MessageElement) {
         let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
         messages.append(newMessage)
         messageHistory = messages

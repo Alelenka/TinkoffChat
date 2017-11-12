@@ -11,13 +11,14 @@ import Foundation
 protocol IConversationService: class {
     var communicator: ICommunicator { get set }
     weak var delegate: ConversationServiceDelegate? { set get }
+    var fetchedResuts: ConversationResults {get set}
     func getUserName(withID userID: String) -> String
-    func getUserConversation(withID userID: String) -> [Message]
+    func getUserConversation(withID userID: String) -> [MessageElement]
     func sendMessage(string text: String, to userID: String, completionHandler: ((_ success: Bool, _ error: Error?) -> ())?)
 }
 
 protocol ConversationServiceDelegate: class {
-    func updateMessages(message: Message)
+    func updateMessages(message: MessageElement)
 }
 
 class ConversationService: IConversationService, ConversationMessageStorageDelegate {
@@ -25,10 +26,12 @@ class ConversationService: IConversationService, ConversationMessageStorageDeleg
     var communicator: ICommunicator
     var dataStorage: ConversationStorage // TO_DO
     weak var delegate: ConversationServiceDelegate?
+    var fetchedResuts: ConversationResults
     
-    init(communicator: ICommunicator, storage: ConversationStorage) {
+    init(communicator: ICommunicator, storage: ConversationStorage, conversationID: String) {
         self.communicator = communicator
         self.dataStorage = storage
+        self.fetchedResuts = ConversationResults.init(stack: storage.stack, conversationID: conversationID)
         self.dataStorage.conversation = self
     }
     
@@ -36,7 +39,8 @@ class ConversationService: IConversationService, ConversationMessageStorageDeleg
         return dataStorage.getUserName(withId: userID)
     }
     
-    func getUserConversation(withID userID: String) -> [Message] {
+    
+    func getUserConversation(withID userID: String) -> [MessageElement] {
         return dataStorage.getConversation(forUser: userID)
     }
     
@@ -45,7 +49,7 @@ class ConversationService: IConversationService, ConversationMessageStorageDeleg
         communicator.sendMessage(string: text, to: userID, completionHandler: completionHandler)
     }
     
-    func updateConversation(withMessage message: Message) {
+    func updateConversation(withMessage message: MessageElement) {
         delegate?.updateMessages(message: message)
     }
 }

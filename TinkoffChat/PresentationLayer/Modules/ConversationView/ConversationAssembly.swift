@@ -11,29 +11,29 @@ import UIKit
 
 class ConversationAssembly {
     
-    var dataStorage: ConversationStorage // ??????
+    var dataStorage: ConversationStorage
     
     init(with storage: ConversationStorage) {
         self.dataStorage = storage
     }
     
-    func setup(inViewController vc: ConversationViewController, communicationService: ICommunicationService, userID: String) {
-        let model = conversationModel(communicationService: communicationService, dataStorage: dataStorage, userID: userID)
+    func setup(inViewController vc: ConversationViewController, communicationService: ICommunicationService, conversationID: String) {
+        let model = conversationModel(communicationService: communicationService, dataStorage: dataStorage, conversationID: conversationID)
         vc.model = model
         model.delegate = vc
     }
     
-    private func conversationModel(communicationService: ICommunicationService, dataStorage: ConversationStorage, userID: String) -> IConversationModel {
-        let service = conversationSercive(communicator: communicationService.communicator, storage: dataStorage)
-        let conversationModel = ConversationModel.init(communicationService: communicationService, conversationService:service, userID: userID)
+    private func conversationModel(communicationService: ICommunicationService, dataStorage: ConversationStorage, conversationID: String) -> IConversationModel {
+        let service = conversationSercive(communicator: communicationService.communicator, storage: dataStorage, conversationID: conversationID)
+        let conversationModel = ConversationModel.init(communicationService: communicationService, conversationService:service, conversationID: conversationID)
         communicationService.conversation = conversationModel
         service.delegate = conversationModel
 
         return conversationModel
     }
     
-    private func conversationSercive(communicator: ICommunicator, storage: ConversationStorage) -> ConversationService {
-        return ConversationService.init(communicator: communicator, storage: storage)
+    private func conversationSercive(communicator: ICommunicator, storage: ConversationStorage, conversationID: String) -> ConversationService {
+        return ConversationService.init(communicator: communicator, storage: storage, conversationID: conversationID)
     }
     
 }

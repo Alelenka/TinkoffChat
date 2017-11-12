@@ -10,8 +10,7 @@ import Foundation
 import CoreData
 import UIKit
 
-
-class StorageManager: IProfileProtocol {
+class ProfileStorageManager: IProfileProtocol {
     
     let stack: ICoreDataStack
     
@@ -47,7 +46,7 @@ class StorageManager: IProfileProtocol {
         
  
     func load(completion: @escaping (ProfileData?) -> Void) {
-        stack.context.perform {
+        stack.mainContext.perform {
             
             guard let appUser = AppUser.findOrInsertAppUser(in: self.stack.context) else {
                 completion(nil)
@@ -64,9 +63,7 @@ class StorageManager: IProfileProtocol {
             }
             let profile = ProfileData.init(with: user.name, description: user.info, image: image)
             
-            DispatchQueue.main.async {
-                completion(profile)
-            }
+            completion(profile)
         }
     }
 }

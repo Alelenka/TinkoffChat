@@ -10,8 +10,12 @@ import Foundation
 
 class RootAssembly {
     
+    private static let coreDataStack: CoreDataStack = {
+        return CoreDataStack()
+    }()
+    
     private static let conversationStorage: ConversationStorage = {
-            return ConversationStorage()
+        return ConversationStorage(with: coreDataStack)
     }()
     
     static let conversationListModule: ConversationsListAssembly = {
@@ -23,6 +27,6 @@ class RootAssembly {
         return ConversationAssembly(with: conversationStorage)
     }()
     
-    static let profileModule = ProfileAssembly()
+    static let profileModule = ProfileAssembly(with: coreDataStack)
 
 }

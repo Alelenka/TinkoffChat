@@ -11,6 +11,12 @@ import UIKit
 
 class ProfileAssembly {
     
+    var dataStack: ICoreDataStack
+    
+    init(with stack: ICoreDataStack) {
+        self.dataStack = stack
+    }
+    
     func setup(inViewController vc: ProfileViewController) {
         let model = ProfileModel.init(profileService: profileService())
         vc.model = model
@@ -21,8 +27,7 @@ class ProfileAssembly {
         return ProfileService.init(withManagers: GCDDataManader(), operation: OperationDataManager(), storage: storage)
     }
     
-    private func storageManager() -> StorageManager {
-        let dataStack = CoreDataStack()
-        return StorageManager.init(withStack: dataStack)
+    private func storageManager() -> ProfileStorageManager {
+        return ProfileStorageManager.init(withStack: dataStack)
     }
 }

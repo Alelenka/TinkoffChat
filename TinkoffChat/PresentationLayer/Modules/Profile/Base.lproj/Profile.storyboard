@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dDC-Ji-lWy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dDC-Ji-lWy">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -106,39 +106,13 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2BI-s1-gZH">
                                         <rect key="frame" x="0.0" y="434" width="288" height="54"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JxT-Bj-Zrd">
-                                                <rect key="frame" x="6" y="4" width="84" height="44"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                <state key="normal" title="GCD">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <state key="disabled">
-                                                    <color key="titleColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.64142219389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="gcdButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qTx-m6-l8L"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Suy-1q-r82">
-                                                <rect key="frame" x="102" y="4" width="84" height="44"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GIf-D8-a36">
+                                                <rect key="frame" x="6" y="4" width="276" height="44"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="c5W-VP-0xV"/>
+                                                    <constraint firstAttribute="height" constant="44" id="1GV-OW-pZF"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                <state key="normal" title="Operation">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <state key="disabled">
-                                                    <color key="titleColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.64142219389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="operationButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mT7-Eg-Zb7"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GIf-D8-a36">
-                                                <rect key="frame" x="198" y="4" width="84" height="44"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                <state key="normal" title="CoreData">
+                                                <state key="normal" title="Сохранить изменения">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <state key="disabled">
@@ -146,24 +120,15 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="coreDataButtinAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Aud-aK-4h1"/>
-                                                    <action selector="gcdButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2kz-Sb-luz"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="Suy-1q-r82" firstAttribute="leading" secondItem="JxT-Bj-Zrd" secondAttribute="trailing" constant="12" id="8T9-8b-O1J"/>
-                                            <constraint firstItem="GIf-D8-a36" firstAttribute="leading" secondItem="Suy-1q-r82" secondAttribute="trailing" constant="12" id="Dva-uk-4Na"/>
-                                            <constraint firstItem="Suy-1q-r82" firstAttribute="top" secondItem="2BI-s1-gZH" secondAttribute="top" constant="4" id="Hao-Th-noj"/>
                                             <constraint firstItem="GIf-D8-a36" firstAttribute="top" secondItem="2BI-s1-gZH" secondAttribute="top" constant="4" id="HfN-BJ-mNz"/>
                                             <constraint firstAttribute="trailing" secondItem="GIf-D8-a36" secondAttribute="trailing" constant="6" id="JqW-PG-Jc6"/>
-                                            <constraint firstItem="JxT-Bj-Zrd" firstAttribute="leading" secondItem="2BI-s1-gZH" secondAttribute="leading" constant="6" id="Or6-bJ-d4p"/>
-                                            <constraint firstItem="JxT-Bj-Zrd" firstAttribute="top" secondItem="2BI-s1-gZH" secondAttribute="top" constant="4" id="Xde-lJ-oAV"/>
                                             <constraint firstAttribute="bottom" secondItem="GIf-D8-a36" secondAttribute="bottom" constant="6" id="f8d-UQ-CuV"/>
-                                            <constraint firstItem="GIf-D8-a36" firstAttribute="width" secondItem="Suy-1q-r82" secondAttribute="width" id="joI-g5-rNk"/>
-                                            <constraint firstAttribute="bottom" secondItem="JxT-Bj-Zrd" secondAttribute="bottom" constant="6" id="ts1-g4-Xi7"/>
-                                            <constraint firstAttribute="bottom" secondItem="Suy-1q-r82" secondAttribute="bottom" constant="6" id="wAX-lt-lzf"/>
-                                            <constraint firstItem="JxT-Bj-Zrd" firstAttribute="width" secondItem="Suy-1q-r82" secondAttribute="width" id="yRn-rM-mP6"/>
+                                            <constraint firstItem="GIf-D8-a36" firstAttribute="leading" secondItem="2BI-s1-gZH" secondAttribute="leading" constant="6" id="ikw-8x-Lsy"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -197,15 +162,13 @@
                         <outlet property="contentTopConstraint" destination="ifk-Mb-bTf" id="m02-Wt-qwG"/>
                         <outlet property="coreDataBtn" destination="GIf-D8-a36" id="XrK-rW-J0z"/>
                         <outlet property="descriptionTextField" destination="0nP-Mv-4VB" id="Ng6-RI-RcA"/>
-                        <outlet property="gcdButton" destination="JxT-Bj-Zrd" id="yoD-Qs-DKS"/>
                         <outlet property="iconImgView" destination="PIp-nk-IQF" id="aXx-qk-U3U"/>
                         <outlet property="nameTextField" destination="B49-nO-Qc8" id="w8J-u2-rfV"/>
-                        <outlet property="operationButton" destination="Suy-1q-r82" id="0UN-BT-xj7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2228" y="-1285"/>
+            <point key="canvasLocation" x="2227.5" y="-1285.5633802816901"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UHB-dH-9gE">

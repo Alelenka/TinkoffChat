@@ -17,9 +17,9 @@ class ProfileService: IProfileService {
     
     private let gcdManager: GCDDataManader
     private let operationManger: OperationDataManager
-    private let storageManager: StorageManager
+    private let storageManager: ProfileStorageManager
     
-    init(withManagers gcd: GCDDataManader, operation: OperationDataManager, storage: StorageManager) {
+    init(withManagers gcd: GCDDataManader, operation: OperationDataManager, storage: ProfileStorageManager) {
         self.gcdManager = gcd
         self.operationManger = operation
         self.storageManager = storage

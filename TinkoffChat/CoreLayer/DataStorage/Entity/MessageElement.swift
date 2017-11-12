@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Message {
+class MessageElement {
     var text: String
     var user: String
     var date: Date?

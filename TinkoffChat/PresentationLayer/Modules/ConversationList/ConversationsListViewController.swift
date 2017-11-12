@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConversationsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, IConversationsListModelDelegate {
+class ConversationsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     private let showConversationSegue = "ShowDialogSegue"
     private let showProfileSegue = "ShowProfileSegue"
@@ -19,10 +19,14 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight =  UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 50.0
-        tableView.delegate = self
-        tableView.dataSource = self
+        model?.setAllUsersOffline {
+            self.model?.communicationService.fetchedResuts.tableView = self.tableView
+            self.tableView.rowHeight =  UITableViewAutomaticDimension
+            self.tableView.estimatedRowHeight = 50.0
+            self.tableView.delegate = self
+            self.tableView.dataSource = self
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,23 +36,23 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    func setup(dataSource: [ConversationsListCellDisplayModel]) {
-        self.dataSource = dataSource
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
 
     // MARK: - TableViewDataSource
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        if let num = model?.getRowsIn(section: section) {
+            return num
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell") as! ConversationsCell
-        let conversation = dataSource[indexPath.row]
+        
+//        let conversation = dataSource[indexPath.row]
+        guard let conversation = model?.getConversation(at: indexPath) else {
+            return cell
+        }
+        
         cell.name = conversation.name
         cell.date = conversation.date
         cell.online = true
@@ -90,8 +94,11 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
                 return
             }
             if let index = tableView.indexPathForSelectedRow {
-                let conversation = dataSource[index.row]
-                RootAssembly.conversationModule.setup(inViewController: conversationVC, communicationService: communicationService, userID: conversation.userID)
+                if let conversation = model?.getConversation(at: index),
+                    let id = conversation.conversationID {
+                    RootAssembly.conversationModule.setup(inViewController: conversationVC, communicationService: communicationService, conversationID: id)
+                }
+                
             }
 
         } else if segue.identifier == showProfileSegue {

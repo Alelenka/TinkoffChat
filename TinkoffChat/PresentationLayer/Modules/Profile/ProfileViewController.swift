@@ -15,8 +15,8 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var chooseIconButton: UIButton!
-    @IBOutlet weak var gcdButton: UIButton!
-    @IBOutlet weak var operationButton: UIButton!
+//    @IBOutlet weak var gcdButton: UIButton!
+//    @IBOutlet weak var operationButton: UIButton!
     @IBOutlet weak var coreDataBtn: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var contentTopConstraint: NSLayoutConstraint!
@@ -83,8 +83,8 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         iconImgView.layer.cornerRadius = chooseIconButton.layer.cornerRadius
     
         //        prepare(button: editButton)
-        prepare(button: gcdButton)
-        prepare(button: operationButton)
+//        prepare(button: gcdButton)
+//        prepare(button: operationButton)
         prepare(button: coreDataBtn)
     
         deactivateUI(true)
@@ -97,8 +97,8 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
     }
     
     private func deactivateUI(_ deactivate: Bool){
-        operationButton.isEnabled = !deactivate
-        gcdButton.isEnabled = !deactivate
+//        operationButton.isEnabled = !deactivate
+//        gcdButton.isEnabled = !deactivate
         coreDataBtn.isEnabled = !deactivate
     }
     
@@ -140,20 +140,17 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         }
     }
     
-//    @IBAction func editAction(_ sender: Any) {
-//    }
-    
     @IBAction func backButtonAction(_ sender: Any) {
         dismiss(animated: true, completion: nil);
     }
     
-    @IBAction func gcdButtonAction(_ sender: Any) {
-        saveProfile(managerType: .GCD)
-    }
-    
-    @IBAction func operationButtonAction(_ sender: Any) {
-        saveProfile(managerType: .operationQueue)
-    }
+//    @IBAction func gcdButtonAction(_ sender: Any) {
+//        saveProfile(managerType: .GCD)
+//    }
+//    
+//    @IBAction func operationButtonAction(_ sender: Any) {
+//        saveProfile(managerType: .operationQueue)
+//    }
     
     @IBAction func coreDataButtinAction(_ sender: Any) {
         saveProfile(managerType: .coreData)

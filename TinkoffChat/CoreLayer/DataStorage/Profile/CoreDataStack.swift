@@ -11,6 +11,7 @@ import CoreData
 
 protocol ICoreDataStack: class {
     var context: NSManagedObjectContext { get }
+    var mainContext: NSManagedObjectContext { get }
     func save(context: NSManagedObjectContext, completionHandler: @escaping (Bool)->())
 }
 
@@ -24,12 +25,12 @@ class CoreDataStack: ICoreDataStack {
             return _managedObjectModel
         } else {
             guard let modelURL = Bundle.main.url(forResource: managedObjectModelName, withExtension: "momd") else {
-                assertionFailure("Error getting model url")
+                print("Error getting model url")
                 return nil
             }
             
             guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
-                assertionFailure("Error creating model from url")
+                print("Error creating model from url")
                 return nil
             }
             
@@ -55,7 +56,7 @@ class CoreDataStack: ICoreDataStack {
                                NSInferMappingModelAutomaticallyOption: true]
                 try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
             } catch {
-                assertionFailure("Error adding store to coordinator: \(error.localizedDescription)")
+                print("Error adding store to coordinator: \(error.localizedDescription)")
                 return nil
             }
             
@@ -82,8 +83,8 @@ class CoreDataStack: ICoreDataStack {
         }
     }
     
-    private var _mainContext: NSManagedObjectContext?
-    private var mainContext: NSManagedObjectContext {
+    var _mainContext: NSManagedObjectContext?
+    var mainContext: NSManagedObjectContext {
         
         if let _mainContext = _mainContext {
             return _mainContext

@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 struct ConversationsListCellDisplayModel {
-    var userID: String
-    var name: String
+    var conversationID: String?
+    var name: String?
     var message: String?
     var date: Date?
     var online: Bool = false
@@ -20,77 +20,56 @@ struct ConversationsListCellDisplayModel {
 
 protocol IConversationsListModel: class {
     var communicationService: ICommunicationService { get set }
-    weak var delegate: IConversationsListModelDelegate? { get set }
+    func setAllUsersOffline(completionHandler: @escaping () -> () )
+    func getSections() -> Int
+    func getRowsIn(section: Int) -> Int
+    func getConversation(at indexPath: IndexPath) -> ConversationsListCellDisplayModel
 }
 
-protocol IConversationsListModelDelegate: class {
-    func setup(dataSource: [ConversationsListCellDisplayModel])
-}
-
-class ConversationsListModel: IConversationsListModel, ICommunicationServiceDelegate {
+class ConversationsListModel: IConversationsListModel {
     
-    weak var delegate: IConversationsListModelDelegate?
     var communicationService: ICommunicationService
     
     init(communicationService: ICommunicationService) {
         self.communicationService = communicationService
     }
     
-    var _conversations = [ConversationsListCellDisplayModel]() {
-        didSet {
-            conversations = _conversations.sorted {
-                                if let date0 = $0.date,
-                                    let date1 = $1.date{
-                                    return date0 > date1
-                                } else {
-                                    return $0.name < $1.name
-                                }
-                            }
+    // MARK: - FRC
+    func getSections() -> Int {
+        guard let frc = communicationService.fetchedResuts.frc,
+            let sectionsCount = frc.sections?.count else {
+                return 0
+        }
+        return sectionsCount
+    }
+    
+    func getRowsIn(section: Int) -> Int {
+        guard let frc = communicationService.fetchedResuts.frc,
+            let sections = frc.sections else {
+            return 0
+        }
+        return sections[section].numberOfObjects
+    }
+    
+    func getConversation(at indexPath: IndexPath) -> ConversationsListCellDisplayModel {
+        if let conversation = communicationService.fetchedResuts.frc?.object(at: indexPath) {
+            
+            let conversationsListCellDisplayModel = ConversationsListCellDisplayModel(
+                conversationID: conversation.conversationID,
+                name: conversation.user?.name,
+                message: conversation.lastMessage?.text,
+                date: conversation.lastMessage?.date,
+                online: conversation.user?.isOnline ?? false,
+                hasUnreadMessages: conversation.hasUnreadMessage)
+            return conversationsListCellDisplayModel
+        }
+        
+        return ConversationsListCellDisplayModel()
+    }
+    
+    func setAllUsersOffline(completionHandler: @escaping () -> () ){
+        communicationService.setAllUsersOffline {
+            completionHandler()
         }
     }
-    
-    var conversations = [ConversationsListCellDisplayModel]() {
-        didSet {
-            delegate?.setup(dataSource: conversations)
-        }
-    }
-    
-    // MARK: - CommunicationServiceDelegate
-    
-    func conversationCreated(conversation: ConversationElement) {
-        let conversationsListCellDisplayModel = ConversationsListCellDisplayModel(
-            userID: conversation.userID,
-            name: conversation.name,
-            message: conversation.lastMessage,
-            date: conversation.lastMessageDate,
-            online: true,
-            hasUnreadMessages: conversation.hasUnreadMessages)
-        _conversations.append(conversationsListCellDisplayModel)
-    }
-    
-    func conversationChanged(conversation: ConversationElement) {
-        if let conversationIdx = conversationIndex(forUser: conversation.userID) {
-            var conversationItem = _conversations[conversationIdx]
-            conversationItem.hasUnreadMessages = conversation.hasUnreadMessages
-            conversationItem.date = conversation.lastMessageDate
-            conversationItem.message = conversation.lastMessage
-            _conversations[conversationIdx] = conversationItem
-        }
-    }
-    
-    func didLostUser(withID userID: String) {
-        if let conversationIdx = conversationIndex(forUser: userID) {
-            _conversations.remove(at: conversationIdx)
-        }
-    }
-
-
-    private func conversationIndex(forUser userID: String) -> Int? {
-        if let ind = conversations.index(where: {$0.userID == userID }) {
-            return ind
-        } else {
-            return nil
-        }
-    }
-    
 }

@@ -13,7 +13,7 @@ extension AppUser {
     
     static func findOrInsertAppUser(in context: NSManagedObjectContext) -> AppUser? {
         guard let model = context.persistentStoreCoordinator?.managedObjectModel else {
-            assertionFailure("Model is not available in context")
+            print("Model is not available in context")
             return nil
         }
         var appUser: AppUser?
@@ -41,7 +41,7 @@ extension AppUser {
     static func insertAppUser(in context: NSManagedObjectContext) -> AppUser? {
         if let appUser = NSEntityDescription.insertNewObject(forEntityName: "AppUser", into: context) as? AppUser {
             if appUser.currentUser == nil {
-                let currentUser = User.findOrInsertAppUser(with: User.generatedUserIdString, in: context)
+                let currentUser = User.findOrInsertUser(with: User.generatedUserIdString, in: context)
                 currentUser?.name = "a.belyaeva"
                 appUser.currentUser = currentUser
             }
@@ -54,7 +54,7 @@ extension AppUser {
     static func fetchRequestAppUser(withModel model: NSManagedObjectModel) -> NSFetchRequest<AppUser>? {
         let templateName = "AppUser"
         guard let fetchRequest = model.fetchRequestTemplate(forName: templateName) as? NSFetchRequest<AppUser> else {
-            assertionFailure("No template with name: \(templateName)")
+            print("No template with name: \(templateName)")
             return nil
         }
         

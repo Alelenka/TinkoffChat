@@ -20,7 +20,7 @@ class ConversationElement  {
         }
     }
     
-    var messages: [Message] = []
+    var messages: [MessageElement] = []
     
     init?(withUser userID: String, userName: String?){
         self.userID = userID
@@ -31,7 +31,7 @@ class ConversationElement  {
         }
     }
     
-    func addMessage(message: Message){
+    func addMessage(message: MessageElement){
         hasUnreadMessages = message.incoming
         lastMessageDate = message.date
 //        lastMessage = message.text

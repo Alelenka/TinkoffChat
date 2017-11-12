@@ -23,7 +23,6 @@ class ConversationsListAssembly {
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
         let vc = navigationController.viewControllers.first as! ConversationsListViewController
         let model = conversationsListModel(withStorage: dataStorage)
-        model.delegate = vc
         vc.model = model
         
         return navigationController
@@ -33,7 +32,6 @@ class ConversationsListAssembly {
 
         let currentCommunicationService = communicationService(withStorage: dataStorage)
         let conversationsListModel = ConversationsListModel.init(communicationService: currentCommunicationService)
-        currentCommunicationService.delegate = conversationsListModel
 
         return conversationsListModel
     }
