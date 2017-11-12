@@ -150,6 +150,8 @@ class ConversationStorage: IConversationStorage, IConversationStorageData {
             user.conversation = conversation
         }
         
+        user.conversation?.isOnline = true
+        
         stack.save(context: stack.context, completionHandler: { success in
             guard success else {
                 assertionFailure()
@@ -166,7 +168,7 @@ class ConversationStorage: IConversationStorage, IConversationStorageData {
         }
         
         user.isOnline = false
-        conversation.user = user
+        conversation.isOnline = false
         
         stack.save(context: stack.context, completionHandler: { success in
             guard success else {
