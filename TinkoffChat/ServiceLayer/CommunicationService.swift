@@ -18,14 +18,15 @@ protocol ICommunicationService: class {
 }
 
 protocol ICommunicationServiceDelegate: class {
-    func conversationCreated(conversation: ConversationElement)
-    func conversationChanged(conversation: ConversationElement)
-    func didLostUser(withID userID: String)
+//    func conversationCreated(conversation: ConversationElement)
+//    func conversationChanged(conversation: ConversationElement)
+//    func didLostUser(withID userID: String)
 }
 
 protocol ICommunicationServiceConversationDelegate: class {
     func didLostUser(withID userID: String)
-    func didReceive(message: MessageElement)
+    func didFoundUser(withID userID: String)
+//    func didReceive(message: MessageElement)
 }
 
 //MARK: -
@@ -54,12 +55,12 @@ class CommunicationService: ICommunicationService, ICommunicatorDelegate, Conver
     
     func didLostUser(userID: String) {
         dataStorage.removeConversation(witUser: userID)
-//        delegate?.didLostUser(withID: userID)
-//        conversation?.didLostUser(withID: userID)
+        conversation?.didLostUser(withID: userID)
     }
     
     func didFoundUser(userID: String, userName: String?) {
         dataStorage.saveNewConversation(withUser: userID, userName: userName)
+        conversation?.didFoundUser(withID: userID)
     }
     
     func didReceiveMessage(text: String, fromUser sender: String, toUser: String) {

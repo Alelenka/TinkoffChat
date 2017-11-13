@@ -21,12 +21,10 @@ protocol IConversationModel: class {
     func getConversation(at indexPath: IndexPath) -> MessageCellDisplayModel
     func sendMessage(string text: String)
     func markAsRead()
-    func checkIfConversationExist()
 }
 
 protocol IConversationModelDelegate: class {
-    func userWentOffline()
-    func setup(dataSource: [MessageCellDisplayModel])
+    func userStateChanged(online: Bool)
 }
 
 class ConversationModel: IConversationModel, ICommunicationServiceConversationDelegate, ConversationServiceDelegate {
@@ -53,12 +51,6 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
         
     }
     
-    var messageHistory = [MessageCellDisplayModel]() {
-        didSet {
-            delegate?.setup(dataSource: messageHistory)
-        }
-    }
-    
     func sendMessage(string text: String) {
         
         conversationService.sendMessage(string: text, to: conversationID) { (success: Bool, error: Error?) in
@@ -74,12 +66,6 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     
     func markAsRead() {
         communicationService.markConversationAsRead(withuserID: conversationID)
-    }
-    
-    func checkIfConversationExist() {
-        if messages.count > 0 {
-            messageHistory = messages
-        }
     }
     
     // MARK: - FRC
@@ -109,20 +95,18 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     
     // MARK: - CommunicationServiceDelegate
     func didLostUser(withID userID: String) {
-//        if userID == self.userID {
-//            delegate?.userWentOffline()
-//        }
+        delegate?.userStateChanged(online: false)
+    }
+    
+    func didFoundUser(withID userID: String) {
+        delegate?.userStateChanged(online: true)
     }
     
     func didReceive(message: MessageElement) {
-        let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
-        messages.append(newMessage)
-        messageHistory = messages
+
     }
     
     func updateMessages(message: MessageElement) {
-        let newMessage = MessageCellDisplayModel(text: message.text, inbox: message.incoming)
-        messages.append(newMessage)
-        messageHistory = messages
+
     }
 }

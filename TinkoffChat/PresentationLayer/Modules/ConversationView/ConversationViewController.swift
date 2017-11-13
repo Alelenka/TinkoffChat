@@ -34,7 +34,6 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
         navigationItem.title = model?.userName
-        model?.checkIfConversationExist()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,17 +112,10 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     }
 
     // MARK: - ModelDelegate
-    func userWentOffline() {
+    func userStateChanged(online: Bool) {
         DispatchQueue.main.async {
-            self.sendButton.isEnabled = false
+            self.sendButton.isEnabled = online
         }
     }
-    
-    func setup(dataSource: [MessageCellDisplayModel]) {
-//        DispatchQueue.main.async {
-//            self.dataSource = dataSource
-//            self.tableView.reloadData()
-//        }
-//        model?.markAsRead()        
-    }
+
 }
