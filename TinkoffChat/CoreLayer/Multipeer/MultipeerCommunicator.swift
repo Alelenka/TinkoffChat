@@ -13,26 +13,29 @@ class MultipeerCommunicator: NSObject, ICommunicator {
     
     private var sessions = [ String : MCSession ]()
     
-    private let peerID = MCPeerID(displayName: UIDevice.current.identifierForVendor!.uuidString)
+    private var peerID: MCPeerID! //(displayName: UIDevice.current.identifierForVendor!.uuidString) 
     private var browser: MCNearbyServiceBrowser!
     private var advertiser: MCNearbyServiceAdvertiser!
     private var messageLoader: IMessageLoader!
+    private var storageInfo: IConversationStorageInfo
     
     private let serviceType = "tinkoff-chat"
-    private let discoveryInfo = ["userName" : UIDevice.current.name] // UIDevice.current.name //for test on mac+device "a.belyaeva"
+    private var discoveryInfo = ["userName" : "a.belyaeva"]
     private let messageEvent = "TextMessage"
     
     //ICommunicator
     weak var delegate: ICommunicatorDelegate?
     var online: Bool = true
     
-    init(withMessageLoader loader: MessageLoader) {
+    init(withMessageLoader loader: MessageLoader, storage: IConversationStorageInfo) {
         
-        super.init()
-        
-        print(peerID)
+        storageInfo = storage
+        peerID = MCPeerID(displayName: storageInfo.getCurrentUserId())
+        discoveryInfo = ["userName" : storageInfo.getCurrentUserName()] // UIDevice.current.name //for test on mac+device "a.belyaeva"
         
         messageLoader = loader
+        
+        super.init()
         
         advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: discoveryInfo, serviceType: serviceType)
         advertiser.delegate = self
@@ -95,7 +98,7 @@ extension MultipeerCommunicator: MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         print("didReceiveData: \(data)")
         guard let messageText = messageLoader.parser.getMessage(fromData: data) else { return }
-        delegate?.didReceiveMessage(text: messageText, fromUser: peerID.displayName, toUser: UUID().uuidString)
+        delegate?.didReceiveMessage(text: messageText, fromUser: peerID.displayName, toUser: storageInfo.getCurrentUserId())
     }
 
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {

@@ -46,7 +46,7 @@ extension User {
     }
     
     static var generatedUserIdString: String {
-        return UIDevice.current.identifierForVendor!.uuidString
+        return UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
     }
     
     static func allUsers(inContext context: NSManagedObjectContext) -> [User]? {

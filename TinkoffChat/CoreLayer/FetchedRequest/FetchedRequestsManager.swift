@@ -25,7 +25,7 @@ struct FetchedRequestsManager {
     
     func fetchRequestAllOnlineConversations() -> NSFetchRequest<Conversation>? {
         let fetchRequest = NSFetchRequest<Conversation>(entityName: "Conversation")
-        fetchRequest.predicate = NSPredicate(format: "user.isOnline == %@", NSNumber(value: true))
+        fetchRequest.predicate = NSPredicate(format: "isOnline == %@", NSNumber(value: true))
         return fetchRequest
     }
     

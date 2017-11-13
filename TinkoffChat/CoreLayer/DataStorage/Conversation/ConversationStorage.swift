@@ -22,6 +22,11 @@ protocol IConversationStorageData {
     func saveMessageFromMe(to userID: String, text: String)
 }
 
+protocol IConversationStorageInfo {
+    func getCurrentUserName() -> String
+    func getCurrentUserId() -> String
+}
+
 protocol IConversationStorage {
     weak var delegate: ConversationStorageDelegate?  { get set }
     weak var conversation: ConversationMessageStorageDelegate?  { get set }
@@ -38,7 +43,7 @@ extension IConversationStorage {
     func removeConversation(witUser userID: String) {   }
 }
 
-class ConversationStorage: IConversationStorage, IConversationStorageData {
+class ConversationStorage: IConversationStorage, IConversationStorageData, IConversationStorageInfo {
     
     weak var delegate: ConversationStorageDelegate?
     weak var conversation: ConversationMessageStorageDelegate?
@@ -54,14 +59,24 @@ class ConversationStorage: IConversationStorage, IConversationStorageData {
         guard let appUser = AppUser.findOrInsertAppUser(in: stack.context),
             let currentUserID = appUser.currentUser?.userID else {
                 assertionFailure()
-                return UUID().uuidString
+                return User.generatedUserIdString
         }
         return currentUserID
     }
     
     // MARK: - Data
-    func getConversationList() -> [ConversationElement] {
-        return converationList
+    
+    func getCurrentUserName() -> String {
+        guard let appUser = AppUser.findOrInsertAppUser(in: stack.context),
+            let currentUserName = appUser.currentUser?.name else {
+                assertionFailure()
+                return "a.belyaeva"
+        }
+        return currentUserName
+    }
+    
+    func getCurrentUserId() -> String {
+        return myID()
     }
     
     func getUserName(withId userID: String) -> String {
@@ -112,7 +127,10 @@ class ConversationStorage: IConversationStorage, IConversationStorageData {
         message.author = sender
         
         message.conversation = conversation
-        message.lastInConversation = conversation        
+        message.lastInConversation = conversation
+        
+        print(message)
+        print(conversation)
         
         stack.save(context: stack.context, completionHandler: { success in
             guard success else {
@@ -142,15 +160,19 @@ class ConversationStorage: IConversationStorage, IConversationStorageData {
         }
         
         user.isOnline = true
+        conversation.isOnline = true
         if let name = userName {
             user.name = name
         }
         
-        if user.conversation == nil {
+        if let userConversation = user.conversation {
+            userConversation.isOnline = true
+        } else {
             user.conversation = conversation
         }
         
-        user.conversation?.isOnline = true
+        print(user)
+        print(conversation)
         
         stack.save(context: stack.context, completionHandler: { success in
             guard success else {
@@ -161,14 +183,15 @@ class ConversationStorage: IConversationStorage, IConversationStorageData {
     }
     
     func removeConversation(witUser userID: String) {
-        guard let user = User.findOrInsertUser(with: userID, in: stack.context),
-            let conversation = Conversation.findOrInsertConversation(withID: userID, in: stack.context) else {
+        guard let user = User.findOrInsertUser(with: userID, in: stack.context) else {
             assertionFailure("Can't find user with given id")
             return
         }
         
         user.isOnline = false
-        conversation.isOnline = false
+        if let conversation = user.conversation {
+            conversation.isOnline = false
+        }
         
         stack.save(context: stack.context, completionHandler: { success in
             guard success else {
@@ -207,6 +230,9 @@ class ConversationStorage: IConversationStorage, IConversationStorageData {
             for user in allUsers {
                 guard user.userID != appUserID else { continue }
                 user.isOnline = false
+                if let conversation = user.conversation {
+                    conversation.isOnline = false
+                }
             }
         }
         

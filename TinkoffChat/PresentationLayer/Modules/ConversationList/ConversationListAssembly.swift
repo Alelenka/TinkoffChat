@@ -39,7 +39,8 @@ class ConversationsListAssembly {
     func communicationService(withStorage dataStorage: ConversationStorage) -> ICommunicationService {
 
         let messageLoader = MessageLoader.init(parser: MessageParser(), maker: MessageMaker())
-        let communicator = MultipeerCommunicator.init(withMessageLoader: messageLoader)
+        
+        let communicator = MultipeerCommunicator.init(withMessageLoader: messageLoader, storage: dataStorage)
         let communicationService = CommunicationService(communicator: communicator, conversationStorage: dataStorage)
         communicator.delegate = communicationService
         return communicationService

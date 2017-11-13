@@ -14,7 +14,7 @@ protocol ICommunicationService: class {
     var communicator: ICommunicator { get set }
     var fetchedResuts: ConversationListResults {get set}
     func markConversationAsRead(withuserID userID: String)
-//    func setAllUsersOffline(completionHandler: @escaping () -> () )
+    func setAllUsersOffline(completionHandler: @escaping () -> () )
 }
 
 protocol ICommunicationServiceDelegate: class {

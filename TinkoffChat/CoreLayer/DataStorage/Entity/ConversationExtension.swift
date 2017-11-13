@@ -45,12 +45,6 @@ extension Conversation {
         return nil
     }
     
-//    static func generateConversationID(withUser UserID: String) -> String{
-//        let id = UserID + "-" + UUID().uuidString
-//        print(id)
-//        print("!!!!!!!!!")
-//        return id
-//    }
 }
 
 extension Conversation {
