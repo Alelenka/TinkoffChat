@@ -297,6 +297,7 @@
 		57B32F6D1FA60691007ACC74 /* CoreLayer */ = {
 			isa = PBXGroup;
 			children = (
+				577841FD1FB86DC10057903A /* FetchedResultsControllers */,
 				57497D2C1FB8570B00607573 /* FetchedRequest */,
 				578D682A1FA60B030055C6BB /* Multipeer */,
 				578D68211FA60AFC0055C6BB /* DataStorage */,
@@ -309,7 +310,6 @@
 		57B32F6E1FA606A3007ACC74 /* ServiceLayer */ = {
 			isa = PBXGroup;
 			children = (
-				577841FD1FB86DC10057903A /* FetchedResultsControllers */,
 				578D683D1FA63D340055C6BB /* CommunicationService.swift */,
 				57A6117A1FA66B4700502106 /* ConversationService.swift */,
 				57A6117C1FA66B5500502106 /* ProfileService.swift */,

@@ -19,7 +19,6 @@ class ProfileStorageManager: IProfileProtocol {
     }
     
     func save(profile: ProfileData, completion: @escaping (_ result: Bool) -> ()) {
-        
         guard let appUser = AppUser.findOrInsertAppUser(in: stack.context) else {
             completion(false)
             return
@@ -29,13 +28,14 @@ class ProfileStorageManager: IProfileProtocol {
             return
         }
         
-        user.name = profile.profileName
-        user.info = profile.profileDescription
-        
-        let photoData = UIImagePNGRepresentation(profile.profileImage)
-        user.photo = photoData
-        
         stack.context.perform {
+            user.name = profile.profileName
+            user.info = profile.profileDescription
+            
+            let photoData = UIImagePNGRepresentation(profile.profileImage)
+            user.photo = photoData
+        
+        
             self.stack.save(context: self.stack.context) { (result) in
                 DispatchQueue.main.async {
                     completion(result)

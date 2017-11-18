@@ -118,18 +118,20 @@ class CoreDataStack: ICoreDataStack {
     }
     
     func save(context: NSManagedObjectContext, completionHandler: @escaping (Bool)->()) {
-        
         if context.hasChanges {
-            do {
-                try context.save()
+            context.perform { [weak self] in
+                do {
+                    try context.save()
+                } catch {
+                    print("Context save error: \(error)")
+                    completionHandler(false)
+                }
+                
                 if let parent = context.parent {
-                    save(context: parent, completionHandler: completionHandler)
+                    self?.save(context: parent, completionHandler: completionHandler)
                 } else {
                     completionHandler(true)
                 }
-            } catch {
-                print(error) //!!!!! TO_DO
-                completionHandler(false)
             }
         } else {
             completionHandler(true)

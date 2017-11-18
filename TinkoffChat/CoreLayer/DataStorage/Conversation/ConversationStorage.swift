@@ -108,7 +108,6 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
     }
     
     private func saveMessage(messageText: String, fromUser: String, toUser: String, completionHandler: @escaping () -> () ) {
-
         let currentUserID = myID()
         
         let participantID = currentUserID == fromUser ? toUser : fromUser
@@ -121,24 +120,27 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
                 return
         }
         
-        conversation.hasUnreadMessage = fromUser != currentUserID
+        stack.context.perform {
+            conversation.hasUnreadMessage = fromUser != currentUserID
+            
+            message.text = messageText
+            message.author = sender
+            
+            message.conversation = conversation
+            message.lastInConversation = conversation
+            
+            print(message)
+            print(conversation)
+            
+            self.stack.save(context: self.stack.context, completionHandler: { success in
+                guard success else {
+                    assertionFailure()
+                    return
+                }
+                completionHandler()
+            })
+        }
         
-        message.text = messageText
-        message.author = sender
-        
-        message.conversation = conversation
-        message.lastInConversation = conversation
-        
-        print(message)
-        print(conversation)
-        
-        stack.save(context: stack.context, completionHandler: { success in
-            guard success else {
-                assertionFailure()
-                return
-            }
-            completionHandler()
-        })
     }
     
     private func save(message: MessageElement, userID: String) {
@@ -159,27 +161,29 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
                 return
         }
         
-        user.isOnline = true
-        conversation.isOnline = true
-        if let name = userName {
-            user.name = name
-        }
-        
-        if let userConversation = user.conversation {
-            userConversation.isOnline = true
-        } else {
-            user.conversation = conversation
-        }
-        
-        print(user)
-        print(conversation)
-        
-        stack.save(context: stack.context, completionHandler: { success in
-            guard success else {
-                assertionFailure()
-                return
+        stack.context.perform {
+            user.isOnline = true
+            conversation.isOnline = true
+            if let name = userName {
+                user.name = name
             }
-        })
+            
+            if let userConversation = user.conversation {
+                userConversation.isOnline = true
+            } else {
+                user.conversation = conversation
+            }
+            
+            print(user)
+            print(conversation)
+            
+            self.stack.save(context: self.stack.context, completionHandler: { success in
+                guard success else {
+                    assertionFailure()
+                    return
+                }
+            })
+        }
     }
     
     func removeConversation(witUser userID: String) {
@@ -187,18 +191,19 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
             assertionFailure("Can't find user with given id")
             return
         }
-        
-        user.isOnline = false
-        if let conversation = user.conversation {
-            conversation.isOnline = false
-        }
-        
-        stack.save(context: stack.context, completionHandler: { success in
-            guard success else {
-                assertionFailure()
-                return
+        stack.context.perform {
+            user.isOnline = false
+            if let conversation = user.conversation {
+                conversation.isOnline = false
             }
-        })
+            
+            self.stack.save(context: self.stack.context, completionHandler: { success in
+                guard success else {
+                    assertionFailure()
+                    return
+                }
+            })
+        }
     }
     
     func markMessageAsRead(conversationID: String) {
@@ -206,15 +211,16 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
             assertionFailure("Can't find user with given id")
             return
         }
-        
-        conversation.hasUnreadMessage = false
-        
-        stack.save(context: stack.context, completionHandler: { success in
-            guard success else {
-                assertionFailure()
-                return
-            }
-        })
+        stack.context.perform {
+            conversation.hasUnreadMessage = false
+            
+            self.stack.save(context: self.stack.context, completionHandler: { success in
+                guard success else {
+                    assertionFailure()
+                    return
+                }
+            })
+        }
     }
     
     func setAllUsersOffline(completionHandler: @escaping () -> () ) {
@@ -225,24 +231,26 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
                 completionHandler()
                 return
         }
+        context.perform {
         
-        if let allUsers = User.allUsers(inContext: context) {
-            for user in allUsers {
-                guard user.userID != appUserID else { continue }
-                user.isOnline = false
-                if let conversation = user.conversation {
-                    conversation.isOnline = false
+            if let allUsers = User.allUsers(inContext: context) {
+                for user in allUsers {
+                    guard user.userID != appUserID else { continue }
+                    user.isOnline = false
+                    if let conversation = user.conversation {
+                        conversation.isOnline = false
+                    }
                 }
             }
+            
+            self.stack.save(context: context, completionHandler: { success in
+                guard success else {
+                    assertionFailure()
+                    return
+                }
+                completionHandler()
+            })
         }
-        
-        stack.save(context: context, completionHandler: { success in
-            guard success else {
-                assertionFailure()
-                return
-            }
-            completionHandler()
-        })
         
     }
 }
