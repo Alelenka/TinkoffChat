@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CPN-aL-yuy">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Photo Collection Controller-->
+        <scene sceneID="PPw-gk-5Nl">
+            <objects>
+                <viewController id="CPN-aL-yuy" customClass="PhotoCollectionController" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3Tv-r9-78W">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pqe-ge-dJs">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="OCn-fN-bJt">
+                                    <size key="itemSize" width="112" height="100"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="PhotoCell" id="Pi8-dF-agF" customClass="PhotoCollectionCell" customModule="TinkoffChat" customModuleProvider="target">
+                                        <rect key="frame" x="10" y="10" width="112" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="112" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="5QT-lA-HYu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="112" height="100"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="5QT-lA-HYu" secondAttribute="bottom" id="8EL-Um-mOK"/>
+                                            <constraint firstItem="5QT-lA-HYu" firstAttribute="leading" secondItem="Pi8-dF-agF" secondAttribute="leading" id="KKe-Nl-q1y"/>
+                                            <constraint firstItem="5QT-lA-HYu" firstAttribute="top" secondItem="Pi8-dF-agF" secondAttribute="top" id="Mmd-8Q-QEa"/>
+                                            <constraint firstAttribute="trailing" secondItem="5QT-lA-HYu" secondAttribute="trailing" id="vGW-eI-3jV"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="photoImageView" destination="5QT-lA-HYu" id="Dvd-KU-XDL"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="fm6-ra-odf">
+                                <rect key="frame" x="169" y="325" width="37" height="37"/>
+                                <color key="color" red="1" green="0.86666666670000003" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
+                            <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="125-6t-005">
+                                <rect key="frame" x="16" y="607" width="343" height="40"/>
+                                <color key="backgroundColor" red="0.87263671875000004" green="0.87263671875000004" blue="0.87263671875000004" alpha="0.3786440855704698" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="4VR-r9-4Ua"/>
+                                </constraints>
+                                <state key="normal" title="Отмена">
+                                    <color key="titleColor" red="0.035294117649999998" green="0.039215686270000001" blue="0.050980392159999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="15"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="cancelButtonAction:" destination="CPN-aL-yuy" eventType="touchUpInside" id="IoX-Kr-K6w"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.28800781249999996" green="0.28800781249999996" blue="0.28800781249999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="fm6-ra-odf" firstAttribute="centerY" secondItem="j8G-Ey-e90" secondAttribute="centerY" id="3mq-ge-M9x"/>
+                            <constraint firstItem="j8G-Ey-e90" firstAttribute="trailing" secondItem="125-6t-005" secondAttribute="trailing" constant="16" id="AYe-7B-zjd"/>
+                            <constraint firstItem="125-6t-005" firstAttribute="leading" secondItem="j8G-Ey-e90" secondAttribute="leading" constant="16" id="J9D-Mz-A8M"/>
+                            <constraint firstItem="j8G-Ey-e90" firstAttribute="trailing" secondItem="pqe-ge-dJs" secondAttribute="trailing" id="LzU-D3-NHh"/>
+                            <constraint firstItem="pqe-ge-dJs" firstAttribute="leading" secondItem="j8G-Ey-e90" secondAttribute="leading" id="N0H-L7-ftU"/>
+                            <constraint firstItem="j8G-Ey-e90" firstAttribute="bottom" secondItem="125-6t-005" secondAttribute="bottom" constant="20" id="adx-je-wQn"/>
+                            <constraint firstItem="pqe-ge-dJs" firstAttribute="top" secondItem="j8G-Ey-e90" secondAttribute="top" id="fOp-r9-zPW"/>
+                            <constraint firstItem="j8G-Ey-e90" firstAttribute="bottom" secondItem="pqe-ge-dJs" secondAttribute="bottom" id="hgK-6n-jTW"/>
+                            <constraint firstItem="fm6-ra-odf" firstAttribute="centerX" secondItem="j8G-Ey-e90" secondAttribute="centerX" id="ybU-ws-QGv"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="j8G-Ey-e90"/>
+                    </view>
+                    <connections>
+                        <outlet property="activityIndicator" destination="fm6-ra-odf" id="l5m-yP-4bI"/>
+                        <outlet property="cancelButton" destination="125-6t-005" id="Qir-yp-p25"/>
+                        <outlet property="collectionView" destination="pqe-ge-dJs" id="Xy8-W2-xI2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Wv-pR-pto" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="165.59999999999999" y="109.29535232383809"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="placeholder" width="512" height="512"/>
+    </resources>
+</document>

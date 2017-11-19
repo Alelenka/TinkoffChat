@@ -31,6 +31,7 @@ class ConversationsCell: UITableViewCell, ConversationsCellConfiguration {
             self.nameLabel?.text =  newValue
         }
     }
+    
     var message : String? {
         get {
             return self.message

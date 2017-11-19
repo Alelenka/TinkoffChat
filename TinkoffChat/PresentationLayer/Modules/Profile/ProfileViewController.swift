@@ -136,6 +136,11 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         }
         alertController.addAction(photoAction)
         
+        let downloadAction = UIAlertAction(title: "Загрузить", style: .default) { action in
+            self.openCollection()
+        }
+        alertController.addAction(downloadAction)
+        
         self.present(alertController, animated: true) {
         }
     }
@@ -206,8 +211,19 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
             picker.cameraCaptureMode = .photo
             present(picker, animated: true, completion: nil)
         }else{
-            showOkAlert(with: "Вниание", message: "На данном девайсе нет камеры")
+            showOkAlert(with: "Внимание", message: "На данном девайсе нет камеры")
         }
+    }
+    
+    func openCollection() {
+        guard let photoCollectionVC = UIStoryboard(name: "PhotoCollection", bundle: nil).instantiateInitialViewController() as? PhotoCollectionController else {
+            return
+        }
+        photoCollectionVC.delegate = self
+        
+        PhotoCollectionAssembly().setup(inViewController: photoCollectionVC)
+        
+        self.present(photoCollectionVC, animated: true, completion: nil)
     }
 }
 
@@ -268,6 +284,14 @@ extension ProfileViewController: UITextFieldDelegate {
         } else if (textField == descriptionTextField){
             currentProfile.info = textField.text!
         }
+    }
+}
+
+extension ProfileViewController: PhotoCollectionControllerDelegate {
+    
+    func photoCollectionController(_ photoCollectionController: PhotoCollectionController, didFinishPickingImage image: UIImage) {
+        currentProfile.photo = image
+        iconImgView.image = image
     }
 }
 

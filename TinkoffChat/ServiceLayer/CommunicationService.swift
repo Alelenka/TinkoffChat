@@ -86,7 +86,11 @@ class CommunicationService: ICommunicationService, ICommunicatorDelegate, Conver
     
     func setAllUsersOffline(completionHandler: @escaping () -> () ) {
         dataStorage.setAllUsersOffline {
-            completionHandler()
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+
+            
         }
     }
 }

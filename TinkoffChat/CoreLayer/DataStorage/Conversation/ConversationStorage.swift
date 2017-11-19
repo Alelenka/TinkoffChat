@@ -129,9 +129,6 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
             message.conversation = conversation
             message.lastInConversation = conversation
             
-            print(message)
-            print(conversation)
-            
             self.stack.save(context: self.stack.context, completionHandler: { success in
                 guard success else {
                     assertionFailure()
@@ -173,9 +170,6 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
             } else {
                 user.conversation = conversation
             }
-            
-            print(user)
-            print(conversation)
             
             self.stack.save(context: self.stack.context, completionHandler: { success in
                 guard success else {
