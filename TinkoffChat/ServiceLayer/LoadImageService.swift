@@ -26,7 +26,7 @@ class LoadImageService: ILoadImageService {
     func loadImageList(page: Int, completionHandler: @escaping ([ImageListModel]?, String?) -> ()) {
         let requestConfig = RequestsFactory.pixabayRequests.cosmosImages(page: page)
         
-        requestSender.send(config: requestConfig, completionHandler: { (result: Result<[ImageListModel]>) in
+        requestSender.send(config: requestConfig, completionHandler: { (result) in
             self.onResult(result: result, completionHandler: completionHandler)
         })
     }

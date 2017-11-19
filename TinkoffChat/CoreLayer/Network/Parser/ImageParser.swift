@@ -13,11 +13,11 @@ struct ImageModel {
     let image: UIImage
 }
 
-class ImageParser: IParser {
+class ImageParser: Parser<ImageModel> {
     
     typealias Model = ImageModel
     
-    func parse(data: Data) -> ImageModel? {
+    override func parse(data: Data) -> ImageModel? {
         
         guard let image = UIImage(data: data) else {
             return nil

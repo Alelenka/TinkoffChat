@@ -12,11 +12,11 @@ struct ImageListModel {
     let urlString: String
 }
 
-class ImageListParser: IParser {
+class ImageListParser: Parser<[ImageListModel]> {
     
     typealias Model = [ImageListModel]
     
-    func parse(data: Data) -> [ImageListModel]? {
+    override func parse(data: Data) -> [ImageListModel]? {
         do {
             guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] else {
                 return nil

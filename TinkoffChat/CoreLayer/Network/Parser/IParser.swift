@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol IParser {
-    associatedtype Model
-    func parse(data: Data) -> Model?
+class Parser<Model> {
+//    associatedtype Model
+    func parse(data: Data) -> Model? { return nil}
 }

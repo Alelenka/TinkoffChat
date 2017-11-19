@@ -8,9 +8,14 @@
 
 import Foundation
 
-struct RequestCongig<Parser> where Parser: IParser {
+//struct RequestConfig<Parser> where Parser: IParser {
+//    let request: IRequest
+//    let parser: Parser
+//}
+
+struct RequestConfig<Model> {
     let request: IRequest
-    let parser: Parser
+    let parser: Parser<Model>
 }
 
 enum Result<T> {
@@ -18,16 +23,17 @@ enum Result<T> {
     case error(String)
 }
 
-
 protocol IRequestSender {
-    func send<Parser>(config: RequestCongig<Parser>, completionHandler: @escaping (Result<Parser.Model>) -> Void)
+//    func send<Parser>(config: RequestConfig<Parser>, completionHandler: @escaping (Result<Parser.Model>) -> Void)
+    func send<Model>(config: RequestConfig<Model>, completionHandler: @escaping (Result<Model>) -> Void)
 }
 
 class RequestSender: IRequestSender {
     
     let session = URLSession.shared
     
-    func send<Parser>(config: RequestCongig<Parser>, completionHandler: @escaping (Result<Parser.Model>) -> Void) {
+//    func send<Parser>(config: RequestConfig<Parser>, completionHandler: @escaping (Result<Parser.Model>) -> Void) {
+    func send<Model>(config: RequestConfig<Model>, completionHandler: @escaping (Result<Model>) -> Void) {
         guard let urlRequest = config.request.urlRequest else {
             completionHandler(Result.error("ulr string can't be parsed to URL"))
             return
@@ -40,7 +46,7 @@ class RequestSender: IRequestSender {
             }
             
             guard let data = data,
-                let parseModel: Parser.Model = config.parser.parse(data: data) else {
+                let parseModel: Model = config.parser.parse(data: data) else {
                     completionHandler(Result.error("recieved data can't be parsed"))
                     return
             }
