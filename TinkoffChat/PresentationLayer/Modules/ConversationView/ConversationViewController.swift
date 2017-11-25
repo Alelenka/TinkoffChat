@@ -16,8 +16,12 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    private var userOnline = true
+    private var messageStarted = false
+    
     var model: IConversationModel?
     private var dataSource = [MessageCellDisplayModel]()
+    private let titleLabel = ConverasionTitleLabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,15 +32,16 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         
         messageTextField.delegate = self
         navigationController?.navigationBar.tintColor = .black
-        
+
+        titleLabel.text = model?.userName
+        navigationItem.titleView = titleLabel
+        navigationItem.titleView?.sizeToFit()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
-        navigationItem.title = model?.userName
-        
-
+        titleLabel.setOnline(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -78,7 +83,8 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         if let str = messageTextField.text {
             if str.count > 0 {
                 model?.sendMessage(string: str)
-                self.messageTextField.text = ""
+                messageTextField.text = ""
+                messageStarted = false
             }
         }
     }
@@ -90,10 +96,11 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
             let txtAfterUpdate = text.replacingCharacters(in: range, with: string)
             
             if txtAfterUpdate.isEmpty {
-                sendButton.isEnabled = false
-            } else if text.length == 0 {
-                sendButton.isEnabled = true
+                messageStarted = false
+            } else {
+                messageStarted = true
             }
+            updateSendButton()
         }
         return true
     }
@@ -129,8 +136,18 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: - ModelDelegate
     func userStateChanged(online: Bool) {
         DispatchQueue.main.async {
-            self.sendButton.isEnabled = online
+            self.userOnline = online
+            self.titleLabel.setOnline(online)
+            self.updateSendButton()
         }
+    }
+    
+    private func updateSendButton() {
+        let newValue = userOnline && messageStarted;
+        if newValue != sendButton.isEnabled {
+            sendButton.isEnabled = newValue
+        }
+        
     }
 
 }

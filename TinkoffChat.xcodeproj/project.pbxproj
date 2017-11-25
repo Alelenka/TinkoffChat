@@ -23,6 +23,7 @@
 		57497D321FB858AD00607573 /* FetchedRequestsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57497D311FB858AD00607573 /* FetchedRequestsManager.swift */; };
 		575E22D51FC9842800A280A4 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E22D41FC9842800A280A4 /* UIButtonExtension.swift */; };
 		575E22D71FC98BC900A280A4 /* SendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E22D61FC98BC900A280A4 /* SendButton.swift */; };
+		575E22D91FC99ECD00A280A4 /* ConverasionTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E22D81FC99ECD00A280A4 /* ConverasionTitleLabel.swift */; };
 		5774D90B1FAE111400ACF9A0 /* SaveOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774D90A1FAE111400ACF9A0 /* SaveOperation.swift */; };
 		5774D90D1FAE112E00ACF9A0 /* LoadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774D90C1FAE112E00ACF9A0 /* LoadOperation.swift */; };
 		577841F91FB861500057903A /* ConversationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577841F81FB861500057903A /* ConversationExtension.swift */; };
@@ -94,6 +95,7 @@
 		57497D311FB858AD00607573 /* FetchedRequestsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedRequestsManager.swift; sourceTree = "<group>"; };
 		575E22D41FC9842800A280A4 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		575E22D61FC98BC900A280A4 /* SendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendButton.swift; sourceTree = "<group>"; };
+		575E22D81FC99ECD00A280A4 /* ConverasionTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverasionTitleLabel.swift; sourceTree = "<group>"; };
 		5774D90A1FAE111400ACF9A0 /* SaveOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveOperation.swift; sourceTree = "<group>"; };
 		5774D90C1FAE112E00ACF9A0 /* LoadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadOperation.swift; sourceTree = "<group>"; };
 		577841F81FB861500057903A /* ConversationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationExtension.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				57B32F751FA60869007ACC74 /* MessageCell.swift */,
 				575E22D41FC9842800A280A4 /* UIButtonExtension.swift */,
 				575E22D61FC98BC900A280A4 /* SendButton.swift */,
+				575E22D81FC99ECD00A280A4 /* ConverasionTitleLabel.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				5774D90B1FAE111400ACF9A0 /* SaveOperation.swift in Sources */,
 				578D683E1FA63D340055C6BB /* CommunicationService.swift in Sources */,
 				578D68261FA60AFC0055C6BB /* GCDDataManager.swift in Sources */,
+				575E22D91FC99ECD00A280A4 /* ConverasionTitleLabel.swift in Sources */,
 				57A6117B1FA66B4700502106 /* ConversationService.swift in Sources */,
 				5716A95D1F937A4C00DCFC8E /* ViewControllerExtension.swift in Sources */,
 				57F83EBE1FAE394700585D6C /* UIImageExtension.swift in Sources */,
