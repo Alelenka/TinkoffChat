@@ -10,7 +10,6 @@ import UIKit
 
 protocol MessageCellConfiguration : class {
     var message: String? {get set}
-    //    var text: String? // Cannot override with a stored deprecated property 'text'
 }
 
 class MessageCell: UITableViewCell , MessageCellConfiguration {

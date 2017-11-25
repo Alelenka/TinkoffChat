@@ -8,11 +8,6 @@
 
 import Foundation
 
-//struct RequestConfig<Parser> where Parser: IParser {
-//    let request: IRequest
-//    let parser: Parser
-//}
-
 struct RequestConfig<Model> {
     let request: IRequest
     let parser: Parser<Model>
@@ -24,7 +19,6 @@ enum Result<T> {
 }
 
 protocol IRequestSender {
-//    func send<Parser>(config: RequestConfig<Parser>, completionHandler: @escaping (Result<Parser.Model>) -> Void)
     func send<Model>(config: RequestConfig<Model>, completionHandler: @escaping (Result<Model>) -> Void)
 }
 
@@ -32,7 +26,6 @@ class RequestSender: IRequestSender {
     
     let session = URLSession.shared
     
-//    func send<Parser>(config: RequestConfig<Parser>, completionHandler: @escaping (Result<Parser.Model>) -> Void) {
     func send<Model>(config: RequestConfig<Model>, completionHandler: @escaping (Result<Model>) -> Void) {
         guard let urlRequest = config.request.urlRequest else {
             completionHandler(Result.error("ulr string can't be parsed to URL"))

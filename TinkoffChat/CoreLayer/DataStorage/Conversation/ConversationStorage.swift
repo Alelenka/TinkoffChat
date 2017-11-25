@@ -8,11 +8,6 @@
 
 import Foundation
 
-protocol ConversationStorageDelegate: class {
-    func conversationChanged(conversation: ConversationElement)
-    func newConversationCreated(conversation: ConversationElement)
-}
-
 protocol ConversationMessageStorageDelegate: class {
     func updateConversation(withMessage message: MessageElement)
 }
@@ -28,7 +23,6 @@ protocol IConversationStorageInfo {
 }
 
 protocol IConversationStorage {
-    weak var delegate: ConversationStorageDelegate?  { get set }
     weak var conversation: ConversationMessageStorageDelegate?  { get set }
     
     func saveNewConversation(withUser userID: String, userName: String?)
@@ -45,11 +39,10 @@ extension IConversationStorage {
 
 class ConversationStorage: IConversationStorage, IConversationStorageData, IConversationStorageInfo {
     
-    weak var delegate: ConversationStorageDelegate?
     weak var conversation: ConversationMessageStorageDelegate?
     
     private var converationList: [ConversationElement] = []
-    var stack: ICoreDataStack //>????
+    var stack: ICoreDataStack 
     
     init(with coreData: ICoreDataStack){
         self.stack = coreData
@@ -95,10 +88,10 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
             print("Error findning user conversation")
             return []
         }
-//        return converationList.first(where: { $0.userID == userID })?.messages ?? []
     }
     
     // MARK: - Storage
+    
     func saveNewMessage(messageText: String, userID: String)  {
         saveMessage(messageText: messageText, fromUser: userID, toUser: myID(), completionHandler: {})
     }
@@ -144,7 +137,6 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
         if let ind = converationList.index(where: {$0.userID == userID}) {
             converationList[ind].addMessage(message: message)
             
-            delegate?.conversationChanged(conversation: converationList[ind])
             conversation?.updateConversation(withMessage: message)
         } else {
             print("get unknown message!!!!!!")

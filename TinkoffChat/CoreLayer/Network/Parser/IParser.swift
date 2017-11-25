@@ -9,6 +9,5 @@
 import Foundation
 
 class Parser<Model> {
-//    associatedtype Model
     func parse(data: Data) -> Model? { return nil}
 }

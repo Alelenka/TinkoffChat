@@ -49,7 +49,6 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell") as! ConversationsCell
         
-//        let conversation = dataSource[indexPath.row]
         guard let conversation = model?.getConversation(at: indexPath) else {
             return cell
         }

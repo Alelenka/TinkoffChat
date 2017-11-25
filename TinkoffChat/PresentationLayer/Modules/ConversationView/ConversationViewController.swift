@@ -55,7 +55,6 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let message = dataSource[indexPath.row]
         
         guard let message = model?.getConversation(at: indexPath) else {
             return UITableViewCell()

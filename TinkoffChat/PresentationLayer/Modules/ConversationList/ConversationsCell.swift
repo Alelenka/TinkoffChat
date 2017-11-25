@@ -38,7 +38,7 @@ class ConversationsCell: UITableViewCell, ConversationsCellConfiguration {
         }
         
         set (newValue) {
-            guard let messageText = newValue else { // guard
+            guard let messageText = newValue else {
                 self.textMessageLabel?.text = "No message yet"
                 return
             }
@@ -47,7 +47,6 @@ class ConversationsCell: UITableViewCell, ConversationsCellConfiguration {
             } else {
                 self.textMessageLabel?.text = messageText
             }
-            //TODO: NO message yet c пустым сообщением
         }
         
     }

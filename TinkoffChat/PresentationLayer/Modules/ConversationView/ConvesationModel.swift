@@ -69,6 +69,7 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     }
     
     // MARK: - FRC
+    
     func getRowsIn(section: Int) -> Int {
         guard let frc = conversationService.fetchedResuts.frc,
             let sections = frc.sections else {
@@ -94,6 +95,7 @@ class ConversationModel: IConversationModel, ICommunicationServiceConversationDe
     }
     
     // MARK: - CommunicationServiceDelegate
+    
     func didLostUser(withID userID: String) {
         delegate?.userStateChanged(online: false)
     }

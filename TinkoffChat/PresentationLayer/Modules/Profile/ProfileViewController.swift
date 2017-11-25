@@ -15,8 +15,7 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var chooseIconButton: UIButton!
-//    @IBOutlet weak var gcdButton: UIButton!
-//    @IBOutlet weak var operationButton: UIButton!
+
     @IBOutlet weak var coreDataBtn: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var contentTopConstraint: NSLayoutConstraint!
@@ -67,13 +66,11 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
 
     override func  viewWillDisappear(_ animated: Bool) {
         super .viewWillDisappear(animated) // Always
-//        logInfo()
         NotificationCenter.default.removeObserver(self)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning() // Always
-//      automated log
     }
 
     // MARK: - UI
@@ -81,10 +78,7 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         iconImgView.image = nil
         chooseIconButton.layer.cornerRadius = chooseIconButton.frame.height/2.0
         iconImgView.layer.cornerRadius = chooseIconButton.layer.cornerRadius
-    
-        //        prepare(button: editButton)
-//        prepare(button: gcdButton)
-//        prepare(button: operationButton)
+
         prepare(button: coreDataBtn)
     
         deactivateUI(true)
@@ -97,8 +91,6 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
     }
     
     private func deactivateUI(_ deactivate: Bool){
-//        operationButton.isEnabled = !deactivate
-//        gcdButton.isEnabled = !deactivate
         coreDataBtn.isEnabled = !deactivate
     }
     
@@ -109,16 +101,9 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         activityIndicator.stopAnimating()
     }
     
-    // MARK: - Logs
-    
-    private func logInfo (string: String = #function) {
-        print("ViewConstoller method : \(string)")
-    }
-    
     // MARK: - Actions
     
     @IBAction func chooseIconAction(_ sender: UIButton) {
-        print("Выбери изображение профиля»")
         
         let alertController = UIAlertController(title: nil, message: "Откуда выбрать изображение?", preferredStyle: .actionSheet)
         
@@ -149,20 +134,12 @@ class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
         dismiss(animated: true, completion: nil);
     }
     
-//    @IBAction func gcdButtonAction(_ sender: Any) {
-//        saveProfile(managerType: .GCD)
-//    }
-//    
-//    @IBAction func operationButtonAction(_ sender: Any) {
-//        saveProfile(managerType: .operationQueue)
-//    }
-    
     @IBAction func coreDataButtinAction(_ sender: Any) {
         saveProfile(managerType: .coreData)
     }
     
     // MARK: - Save
-    func saveProfile(managerType: ProfileManagerType) {//<T: SaveInfoProtocol>(manager: T) {
+    func saveProfile(managerType: ProfileManagerType) {
         if let changed = model?.profileChanged, changed {
             activityIndicator.startAnimating()
             deactivateUI(true)

@@ -10,7 +10,6 @@ import UIKit
 
 protocol PhotoCollectionCellConfiguration : class {
     var photo: UIImage? {get set}
-    //    var text: String? // Cannot override with a stored deprecated property 'text'
 }
 
 class PhotoCollectionCell: UICollectionViewCell, PhotoCollectionCellConfiguration {
