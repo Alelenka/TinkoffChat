@@ -16,7 +16,7 @@ struct PhotoCellDisplayModel {
 protocol IPhotoCollectionModel: class {
     func getCountOfRows() -> Int
     func fetchImages(completionHandler: @escaping (Bool) -> () )
-    func getPhoto(at indexPath: IndexPath, completionHandler: @escaping (PhotoCellDisplayModel) -> () )
+    func getPhoto(at index: Int, completionHandler: @escaping (PhotoCellDisplayModel) -> () )
 }
 
 class PhotoCollectionModel: IPhotoCollectionModel {
@@ -47,8 +47,8 @@ class PhotoCollectionModel: IPhotoCollectionModel {
         return imageUrls.count
     }
     
-    func getPhoto(at indexPath: IndexPath, completionHandler: @escaping (PhotoCellDisplayModel) -> ()) {
-        let model = imageUrls[indexPath.row]
+    func getPhoto(at index: Int, completionHandler: @escaping (PhotoCellDisplayModel) -> ()) {
+        let model = imageUrls[index]
         
         loadService.loadImage(withURL: model.urlString) { (model, error) in
             

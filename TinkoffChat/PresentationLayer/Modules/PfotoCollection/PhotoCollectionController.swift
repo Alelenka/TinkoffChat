@@ -86,7 +86,7 @@ extension PhotoCollectionController: UICollectionViewDataSource {
         cell.photo = #imageLiteral(resourceName: "placeholder")
         
         DispatchQueue.global(qos: .userInitiated).async {
-            self.model?.getPhoto(at: indexPath, completionHandler: { (dispalyModel) in
+            self.model?.getPhoto(at: indexPath.row, completionHandler: { (dispalyModel) in
                 DispatchQueue.main.async {
                      cell.photo = dispalyModel.image
                 }
