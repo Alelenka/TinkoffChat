@@ -85,7 +85,7 @@ class ConversationStorage: IConversationStorage, IConversationStorageData, IConv
         if let ind = converationList.index(where: {$0.userID == userID }) {
             return converationList[ind].messages
         } else {
-            print("Error findning user conversation")
+            print("Error findning user conversation or conversation empty")
             return []
         }
     }

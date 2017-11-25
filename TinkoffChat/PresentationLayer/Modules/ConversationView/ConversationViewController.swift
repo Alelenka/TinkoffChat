@@ -28,12 +28,15 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
         
         messageTextField.delegate = self
         navigationController?.navigationBar.tintColor = .black
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
         navigationItem.title = model?.userName
+        
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,7 +74,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBAction func sendButtonAction(_ sender: Any) {
         messageTextField.resignFirstResponder()
-        
+
         if let str = messageTextField.text {
             if str.count > 0 {
                 model?.sendMessage(string: str)
@@ -81,6 +84,19 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     // MARK: - TextField
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text as NSString? {
+            let txtAfterUpdate = text.replacingCharacters(in: range, with: string)
+            
+            if txtAfterUpdate.isEmpty {
+                sendButton.isEnabled = false
+            } else if text.length == 0 {
+                sendButton.isEnabled = true
+            }
+        }
+        return true
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
