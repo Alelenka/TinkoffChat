@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConversationsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ConversationsListViewController: AnimationViewController, UITableViewDelegate, UITableViewDataSource {
 
     private let showConversationSegue = "ShowDialogSegue"
     private let showProfileSegue = "ShowProfileSegue"
@@ -27,6 +27,7 @@ class ConversationsListViewController: UIViewController, UITableViewDelegate, UI
             self.tableView.delegate = self
             self.tableView.dataSource = self
         }
+        
         
     }
     

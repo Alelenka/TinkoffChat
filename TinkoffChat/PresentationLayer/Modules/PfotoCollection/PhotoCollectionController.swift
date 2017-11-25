@@ -12,7 +12,7 @@ protocol PhotoCollectionControllerDelegate: class {
     func photoCollectionController(_ photoCollectionController: PhotoCollectionController, didFinishPickingImage image: UIImage )
 }
 
-class PhotoCollectionController: UIViewController {
+class PhotoCollectionController: AnimationViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var cancelButton: UIButton!

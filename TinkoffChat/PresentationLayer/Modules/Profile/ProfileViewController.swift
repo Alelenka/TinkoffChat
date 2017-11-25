@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UIPopoverControllerDelegate {
+class ProfileViewController: AnimationViewController, UIPopoverControllerDelegate {
 
     //MARK: - Outlets
     @IBOutlet weak var iconImgView: UIImageView!

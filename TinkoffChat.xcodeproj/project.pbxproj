@@ -24,6 +24,7 @@
 		575E22D51FC9842800A280A4 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E22D41FC9842800A280A4 /* UIButtonExtension.swift */; };
 		575E22D71FC98BC900A280A4 /* SendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E22D61FC98BC900A280A4 /* SendButton.swift */; };
 		575E22D91FC99ECD00A280A4 /* ConverasionTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E22D81FC99ECD00A280A4 /* ConverasionTitleLabel.swift */; };
+		575E22DD1FC9CCBF00A280A4 /* AnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E22DC1FC9CCBF00A280A4 /* AnimationViewController.swift */; };
 		5774D90B1FAE111400ACF9A0 /* SaveOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774D90A1FAE111400ACF9A0 /* SaveOperation.swift */; };
 		5774D90D1FAE112E00ACF9A0 /* LoadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774D90C1FAE112E00ACF9A0 /* LoadOperation.swift */; };
 		577841F91FB861500057903A /* ConversationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577841F81FB861500057903A /* ConversationExtension.swift */; };
@@ -96,6 +97,7 @@
 		575E22D41FC9842800A280A4 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		575E22D61FC98BC900A280A4 /* SendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendButton.swift; sourceTree = "<group>"; };
 		575E22D81FC99ECD00A280A4 /* ConverasionTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverasionTitleLabel.swift; sourceTree = "<group>"; };
+		575E22DC1FC9CCBF00A280A4 /* AnimationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationViewController.swift; sourceTree = "<group>"; };
 		5774D90A1FAE111400ACF9A0 /* SaveOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveOperation.swift; sourceTree = "<group>"; };
 		5774D90C1FAE112E00ACF9A0 /* LoadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadOperation.swift; sourceTree = "<group>"; };
 		577841F81FB861500057903A /* ConversationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationExtension.swift; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 				57B32F6F1FA606E5007ACC74 /* ConversationList */,
 				57B32F701FA606F7007ACC74 /* ConversationView */,
 				57B32F711FA60707007ACC74 /* Profile */,
+				575E22DC1FC9CCBF00A280A4 /* AnimationViewController.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -536,7 +539,6 @@
 				TargetAttributes = {
 					57A10C851F72C9C4005516C4 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = GT8K5LG9MW;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 					};
@@ -641,6 +643,7 @@
 				57497D301FB8575400607573 /* ConversationResults.swift in Sources */,
 				578D68281FA60AFC0055C6BB /* ProfileData.swift in Sources */,
 				575E22D51FC9842800A280A4 /* UIButtonExtension.swift in Sources */,
+				575E22DD1FC9CCBF00A280A4 /* AnimationViewController.swift in Sources */,
 				575E22D71FC98BC900A280A4 /* SendButton.swift in Sources */,
 				57D3C6051FC06E5B0030AFE2 /* PhotoCollectionAssembly.swift in Sources */,
 				57A611751FA66AA000502106 /* ConvesationModel.swift in Sources */,
@@ -798,13 +801,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = GT8K5LG9MW;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TinkoffChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alelena.TinkoffChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fb94dcd7-beec-400f-8290-660b4d4be81a";
-				PROVISIONING_PROFILE_SPECIFIER = Dev;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};

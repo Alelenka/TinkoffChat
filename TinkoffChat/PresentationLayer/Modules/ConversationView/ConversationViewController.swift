@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, IConversationModelDelegate {
+class ConversationViewController: AnimationViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, IConversationModelDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
